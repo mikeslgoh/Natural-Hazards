@@ -1,0 +1,269 @@
+/* Soil Site Content Boxes (seatosky)
+----------------------------------------------- */
+
+.seatosky-search-left, .seatosky-site-left {
+    float: left;
+    width: 48%;
+}
+
+.seatosky-search-right, .seatosky-site-right {
+    float: right;
+    width: 48%;
+}
+
+.seatosky-content-top, .seatosky-content-media, .seatosky-content-box, .seatosky-content-links {
+    background-color: #feffeb;
+    margin-bottom: 20px;
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.seatosky-content-top h3, .seatosky-content-media h3, .seatosky-content-box h3, .seatosky-content-links h3 {
+    color:#542437;
+    padding:0;
+    margin:10px 0;
+    text-align: center;
+}
+
+.seatosky-content-top p, .seatosky-content-media p, .seatosky-content-box p, .seatosky-content-links p {
+    color:#542437;
+    padding:0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.seatosky-content-top {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.seatosky-accordion-title-1, .seatosky-accordion-title-2, .seatosky-accordion-title-3, .seatosky-accordion-title-4, .seatosky-accordion-title-5, .seatosky-accordion-title-6, .seatosky-accordion-title-7 {
+    border:1px solid #;
+    border-radius: 5px;
+    color:#EEE;
+    margin-bottom: 2px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.seatosky-accordion-title-1 {
+    background: #326931;
+}
+
+.seatosky-accordion-title-2 {
+    background: #4b6f4a;
+}
+
+.seatosky-accordion-title-3 {
+    background: #515c49;
+}
+
+.seatosky-accordion-title-4 {
+    background: #4c4d3e;
+}
+
+.seatosky-accordion-title-5 {
+    background: #3d3d32;
+}
+
+.seatosky-accordion-title-6 {
+    background: #36362c;
+}
+
+.seatosky-accordion-title-7 {
+    background: #292922;
+    margin-bottom: 20px;
+}
+
+.seatosky-accordion-pane-1, .seatosky-accordion-pane-2 {
+    margin-bottom: 10px;
+    border:1px solid #ededed;
+    border-radius: 5px;
+    background-color: #feffeb;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.seatosky-accordion-pane-2 {
+    margin-top: -18px;
+    margin-bottom: 20px;
+}
+
+.seatosky-content-media {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.seatosky-content-links {
+}
+
+
+/* Soil Site Google Maps Display Div (seatosky)
+----------------------------------------------- */
+
+#googft-mapCanvas img { max-width: none; box-shadow: none; }
+
+/* Filter Box (seatosky)
+----------------------------------------------- */
+
+.seatosky-filter {
+    text-align: center;
+    width: 100%;
+    background: #feffeb;
+    border: 1px solid #ededed;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.seatosky-filter #filter-left {
+    display:inline-block;
+    padding:0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    vertical-align: middle;
+}
+
+
+.seatosky-filter #filter-left h3 {
+    color:#777777;
+    padding:0px;
+    margin:0px;
+}
+
+.seatosky-filter #filter-middle {
+    display:inline-block;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom: 4px;
+}
+
+.seatosky-filter #filter-right {
+    display:inline-block;
+    padding-left:10px;
+    padding-right 10px;
+}
+
+.seatosky-filter #filter-right input {
+    padding:5px;
+}
+
+/* Search Boxes (seatosky)
+----------------------------------------------- */
+
+.seatosky-search-box {
+    width: 100%;
+    overflow: hidden;
+    background: #feffeb;
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.seatosky-search-box p {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+
+/* Search Results Tabs (seatosky)
+----------------------------------------------- */
+
+#seatosky-tabs #menu-wrap {
+    text-align: center; 
+}
+
+#seatosky-tabs #menu-wrap ul {
+    margin: 0px;
+}
+
+#seatosky-tabs #menu-wrap li {
+    display: inline-block; 
+    float: none; 
+    top: 0px; 
+    margin: 0em;
+    padding: 0px;
+    margin-bottom: -1px;
+    border: 1px solid #ededed;
+    border-bottom: 0px;
+    border-radius: 5px 5px 0 0;
+    background-color: #353b17;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    *display: inline;
+    zoom: 1;
+}
+
+#seatosky-tabs #menu-wrap li a {
+    padding: 10px;
+    color: #dddddd;
+    text-decoration: none;
+    text-align: center; 
+}
+
+#seatosky-tabs #menu-wrap li a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+#seatosky-tabs #menu-wrap .ui-state-active {
+    background-color: #feffeb;
+}
+
+#seatosky-tabs #menu-wrap .ui-state-active a {
+    color: #000000;
+}
+
+#seatosky-tabs #menu-wrap .ui-state-active a:hover {
+    color: black;
+}
+
+#seatosky-tabs .seatosky-tabs-pane {
+    border: 1px solid #ededed;  
+    border-radius: 5px;
+    background-color: #feffeb;
+    padding: 10px 10px;
+    display: block;
+}
+
+#seatosky-tabs #map, #seatosky-tabs #list {
+    height: 550px;
+    overflow: scroll;
+}
+
+/* =Media queries
+-------------------------------------------------------------- */
+
+/* Minimum width of 600 pixels. */
+@media screen and (max-width: 600px) {
+    
+    /* Search (seatosky) (wide)
+    ----------------------------------------------- */
+
+    .seatosky-search-left {
+    float: none;
+    width: 100%;
+    }
+
+    .seatosky-search-right {
+    float: none;
+    width: 100%;
+    }
+    
+    /* Site (seatosky) (wide)
+    ----------------------------------------------- */
+    
+    .seatosky-site-left {
+    float: none;
+    width: 100%;
+    }
+    
+    .seatosky-site-right {
+    float: non;
+    width: 100%;
+    }
+}
