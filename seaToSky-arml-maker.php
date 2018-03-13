@@ -21,9 +21,9 @@
 		}
 	}
 
-    $jsonQuery = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1N1o4vH-_ENy_NzApLriGaTb-mOFeckMymhT0WRU';
+    $jsonQuery = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1rCXW4hvPhZgGk0rc1f1XQ8S5nvScI2j92UOWkMIR';
 
-    $jsonEnd = '&key=AIzaSyAgZ1MFetzZJyD8KQGVlaAhR1mRYIFSur4';
+    $jsonEnd = '&key=AIzaSyCvt65SJjqXPoa9gjl2zxFLdQaiVL990eU';
 
     $jsonQuery .= $jsonEnd;
 
