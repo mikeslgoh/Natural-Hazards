@@ -1,17 +1,17 @@
-/* Soil Site Content Boxes (seatosky)
+/* Soil Site Content Boxes (seaToSky)
 ----------------------------------------------- */
 
-.seatosky-search-left, .seatosky-site-left {
+.seaToSky-search-left, .seaToSky-site-left {
     float: left;
     width: 48%;
 }
 
-.seatosky-search-right, .seatosky-site-right {
+.seaToSky-search-right, .seaToSky-site-right {
     float: right;
     width: 48%;
 }
 
-.seatosky-content-top, .seatosky-content-media, .seatosky-content-box, .seatosky-content-links {
+.seaToSky-content-top, .seaToSky-content-media, .seaToSky-content-box, .seaToSky-content-links {
     background-color: #feffeb;
     margin-bottom: 20px;
     border: 1px solid #ededed;
@@ -19,26 +19,26 @@
     width: 100%;
 }
 
-.seatosky-content-top h3, .seatosky-content-media h3, .seatosky-content-box h3, .seatosky-content-links h3 {
+.seaToSky-content-top h3, .seaToSky-content-media h3, .seaToSky-content-box h3, .seaToSky-content-links h3 {
     color:#542437;
     padding:0;
     margin:10px 0;
     text-align: center;
 }
 
-.seatosky-content-top p, .seatosky-content-media p, .seatosky-content-box p, .seatosky-content-links p {
+.seaToSky-content-top p, .seaToSky-content-media p, .seaToSky-content-box p, .seaToSky-content-links p {
     color:#542437;
     padding:0;
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.seatosky-content-top {
+.seaToSky-content-top {
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
-.seatosky-accordion-title-1, .seatosky-accordion-title-2, .seatosky-accordion-title-3, .seatosky-accordion-title-4, .seatosky-accordion-title-5, .seatosky-accordion-title-6, .seatosky-accordion-title-7 {
+.seaToSky-accordion-title-1, .seaToSky-accordion-title-2, .seaToSky-accordion-title-3, .seaToSky-accordion-title-4, .seaToSky-accordion-title-5, .seaToSky-accordion-title-6, .seaToSky-accordion-title-7 {
     border:1px solid #;
     border-radius: 5px;
     color:#EEE;
@@ -48,36 +48,36 @@
     text-align: left;
 }
 
-.seatosky-accordion-title-1 {
+.seaToSky-accordion-title-1 {
     background: #326931;
 }
 
-.seatosky-accordion-title-2 {
+.seaToSky-accordion-title-2 {
     background: #4b6f4a;
 }
 
-.seatosky-accordion-title-3 {
+.seaToSky-accordion-title-3 {
     background: #515c49;
 }
 
-.seatosky-accordion-title-4 {
+.seaToSky-accordion-title-4 {
     background: #4c4d3e;
 }
 
-.seatosky-accordion-title-5 {
+.seaToSky-accordion-title-5 {
     background: #3d3d32;
 }
 
-.seatosky-accordion-title-6 {
+.seaToSky-accordion-title-6 {
     background: #36362c;
 }
 
-.seatosky-accordion-title-7 {
+.seaToSky-accordion-title-7 {
     background: #292922;
     margin-bottom: 20px;
 }
 
-.seatosky-accordion-pane-1, .seatosky-accordion-pane-2 {
+.seaToSky-accordion-pane-1, .seaToSky-accordion-pane-2 {
     margin-bottom: 10px;
     border:1px solid #ededed;
     border-radius: 5px;
@@ -86,29 +86,29 @@
     overflow: hidden;
 }
 
-.seatosky-accordion-pane-2 {
+.seaToSky-accordion-pane-2 {
     margin-top: -18px;
     margin-bottom: 20px;
 }
 
-.seatosky-content-media {
+.seaToSky-content-media {
     text-align: center;
     padding-bottom: 20px;
 }
 
-.seatosky-content-links {
+.seaToSky-content-links {
 }
 
 
-/* Soil Site Google Maps Display Div (seatosky)
+/* Soil Site Google Maps Display Div (seaToSky)
 ----------------------------------------------- */
 
 #googft-mapCanvas img { max-width: none; box-shadow: none; }
 
-/* Filter Box (seatosky)
+/* Filter Box (seaToSky)
 ----------------------------------------------- */
 
-.seatosky-filter {
+.seaToSky-filter {
     text-align: center;
     width: 100%;
     background: #feffeb;
@@ -118,7 +118,7 @@
     border-radius: 5px;
 }
 
-.seatosky-filter #filter-left {
+.seaToSky-filter #filter-left {
     display:inline-block;
     padding:0px;
     padding-left: 10px;
@@ -128,33 +128,33 @@
 }
 
 
-.seatosky-filter #filter-left h3 {
+.seaToSky-filter #filter-left h3 {
     color:#777777;
     padding:0px;
     margin:0px;
 }
 
-.seatosky-filter #filter-middle {
+.seaToSky-filter #filter-middle {
     display:inline-block;
     padding-left:10px;
     padding-right:10px;
     padding-bottom: 4px;
 }
 
-.seatosky-filter #filter-right {
+.seaToSky-filter #filter-right {
     display:inline-block;
     padding-left:10px;
     padding-right 10px;
 }
 
-.seatosky-filter #filter-right input {
+.seaToSky-filter #filter-right input {
     padding:5px;
 }
 
-/* Search Boxes (seatosky)
+/* Search Boxes (seaToSky)
 ----------------------------------------------- */
 
-.seatosky-search-box {
+.seaToSky-search-box {
     width: 100%;
     overflow: hidden;
     background: #feffeb;
@@ -162,25 +162,25 @@
     border-radius: 5px;
     margin-bottom: 10px;
 }
-.seatosky-search-box p {
+.seaToSky-search-box p {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
 }
 
 
-/* Search Results Tabs (seatosky)
+/* Search Results Tabs (seaToSky)
 ----------------------------------------------- */
 
-#seatosky-tabs #menu-wrap {
+#seaToSky-tabs #menu-wrap {
     text-align: center; 
 }
 
-#seatosky-tabs #menu-wrap ul {
+#seaToSky-tabs #menu-wrap ul {
     margin: 0px;
 }
 
-#seatosky-tabs #menu-wrap li {
+#seaToSky-tabs #menu-wrap li {
     display: inline-block; 
     float: none; 
     top: 0px; 
@@ -198,31 +198,31 @@
     zoom: 1;
 }
 
-#seatosky-tabs #menu-wrap li a {
+#seaToSky-tabs #menu-wrap li a {
     padding: 10px;
     color: #dddddd;
     text-decoration: none;
     text-align: center; 
 }
 
-#seatosky-tabs #menu-wrap li a:hover {
+#seaToSky-tabs #menu-wrap li a:hover {
     color: white;
     text-decoration: none;
 }
 
-#seatosky-tabs #menu-wrap .ui-state-active {
+#seaToSky-tabs #menu-wrap .ui-state-active {
     background-color: #feffeb;
 }
 
-#seatosky-tabs #menu-wrap .ui-state-active a {
+#seaToSky-tabs #menu-wrap .ui-state-active a {
     color: #000000;
 }
 
-#seatosky-tabs #menu-wrap .ui-state-active a:hover {
+#seaToSky-tabs #menu-wrap .ui-state-active a:hover {
     color: black;
 }
 
-#seatosky-tabs .seatosky-tabs-pane {
+#seaToSky-tabs .seaToSky-tabs-pane {
     border: 1px solid #ededed;  
     border-radius: 5px;
     background-color: #feffeb;
@@ -230,7 +230,7 @@
     display: block;
 }
 
-#seatosky-tabs #map, #seatosky-tabs #list {
+#seaToSky-tabs #map, #seaToSky-tabs #list {
     height: 550px;
     overflow: scroll;
 }
@@ -241,28 +241,28 @@
 /* Minimum width of 600 pixels. */
 @media screen and (max-width: 600px) {
     
-    /* Search (seatosky) (wide)
+    /* Search (seaToSky) (wide)
     ----------------------------------------------- */
 
-    .seatosky-search-left {
+    .seaToSky-search-left {
     float: none;
     width: 100%;
     }
 
-    .seatosky-search-right {
+    .seaToSky-search-right {
     float: none;
     width: 100%;
     }
     
-    /* Site (seatosky) (wide)
+    /* Site (seaToSky) (wide)
     ----------------------------------------------- */
     
-    .seatosky-site-left {
+    .seaToSky-site-left {
     float: none;
     width: 100%;
     }
     
-    .seatosky-site-right {
+    .seaToSky-site-right {
     float: non;
     width: 100%;
     }

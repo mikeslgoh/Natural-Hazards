@@ -5,12 +5,7 @@
 
      Plugin Name: SeaToSky
      Plugin URI:
-     Description: This plugin contains shortcode for creating:
-         the seaToSky filter bar ([seaToSky_filter])
-         search page([seaToSky_search])
-         map page ([seaToSky_map])
-         aggregated search results page ([seaToSky_results] both as a list ([seaToSky_list]) and as a map([seaToSky_map]))
-         and individual soil site page ([seaToSky_site]). 
+     Description: This plugin contains shortcode for creating, the seaToSky filter bar ([seaToSky_filter]), search page([seaToSky_search]), map page ([seaToSky_map]), aggregated search results page ([seaToSky_results] both as a list ([seaToSky_list]) and as a map([seaToSky_map])) and individual soil site page ([seaToSky_site]). 
      It also has some supporting JavaScript and CSS files.
      Version: 1.1.1
      Author: Michael Goh
@@ -306,62 +301,20 @@
      */
 
     function seaToSky_map() {
-        wp_enqueue_script('seaToSky-script-4', 'http://www.google.com/jsapi', array(), 1, true );
-        wp_enqueue_script('seaToSky-script-5', 'http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
+         wp_enqueue_script('seaToSky-script-4', 'http://www.google.com/jsapi', array(), 1, true );
+         wp_enqueue_script('seaToSky-script-5', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
 
-        $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
+         $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
 
-        if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
-            $mapsQuery .= "&id=" . urlencode($_REQUEST['id']) . "";
-        if(isset($_REQUEST['soil_order']) && $_REQUEST['soil_order'] != '')
-            $mapsQuery .= "&soil_order=" . urlencode($_REQUEST['soil_order']) . "";
-        if(isset($_REQUEST['great_group']) && $_REQUEST['great_group'] != '')
-            $mapsQuery .= "&great_group=" . urlencode($_REQUEST['great_group']) . "";
-        if(isset($_REQUEST['subgroup']) && $_REQUEST['subgroup'] != '')
-            $mapsQuery .= "&subgroup=" . urlencode($_REQUEST['subgroup']) . "";
-        if(isset($_REQUEST['ecosystem']) && $_REQUEST['ecosystem'] != '')
-            $mapsQuery .= "&ecosystem=" . urlencode($_REQUEST['ecosystem']) . "";
-        if(isset($_REQUEST['bc_biogeoclimatic_zone']) && $_REQUEST['bc_biogeoclimatic_zone'] != '')
-            $mapsQuery .= "&bc_biogeoclimatic_zone=" . urlencode($_REQUEST['bc_biogeoclimatic_zone']) . "";
-        if(isset($_REQUEST['climate_zone']) && $_REQUEST['climate_zone'] != '')
-            $mapsQuery .= "&climate_zone=" . urlencode($_REQUEST['climate_zone']) . "";
-        if(isset($_REQUEST['soil_texture_diag']) && $_REQUEST['soil_texture_diag'] != '')
-            $mapsQuery .= "&soil_texture_diag=" . urlencode($_REQUEST['soil_texture_diag']) . "";
-        if(isset($_REQUEST['parent_material']) && $_REQUEST['parent_material'] != '')
-            $mapsQuery .= "&parent_material=" . urlencode($_REQUEST['parent_material']) . "";
-        if(isset($_REQUEST['primary_soil_process_group']) && $_REQUEST['primary_soil_process_group'] != '')
-            $mapsQuery .= "&primary_soil_process_group=" . urlencode($_REQUEST['primary_soil_process_group']) . "";
-        if(isset($_REQUEST['place_name']) && $_REQUEST['place_name'] != '')
-            $mapsQuery .= "&place_name=" . urlencode($_REQUEST['place_name']) . "";
-        if(isset($_REQUEST['city']) && $_REQUEST['city'] != '')
-            $mapsQuery .= "&city=" . urlencode($_REQUEST['city']) . "";
-        if(isset($_REQUEST['region']) && $_REQUEST['region'] != '')
-            $mapsQuery .= "&region=" . urlencode($_REQUEST['region']) . "";
-        if(isset($_REQUEST['country']) && $_REQUEST['country'] != '')
-            $mapsQuery .= "&country=" . urlencode($_REQUEST['country']) . "";
-        if(isset($_REQUEST['planet']) && $_REQUEST['planet'] != '')
-            $mapsQuery .= "&planet=" . urlencode($_REQUEST['planet']) . "";
-        if(isset($_REQUEST['degrees']) && $_REQUEST['degrees'] != '')
-            $mapsQuery .= "&degrees=" . urlencode($_REQUEST['degrees']) . "";
-        if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
-            $mapsQuery .= "&latitude=" . urlencode($_REQUEST['latitude']) . "";
-        }
-        if(isset($_REQUEST['longitude']) && $_REQUEST['longitude'] != '') {
-            $mapsQuery .= "&longitude=" . urlencode($_REQUEST['longitude']) . "";
-        }
-        if(isset($_REQUEST['min_ele']) && $_REQUEST['min_ele'] != '')
-            $mapsQuery .= "&min_ele=" . urlencode($_REQUEST['min_ele']) . "";
-        if(isset($_REQUEST['max_ele']) && $_REQUEST['max_ele'] != '')
-            $mapsQuery .= "&max_ele=" . urlencode($_REQUEST['max_ele']) . "";
-        if(isset($_REQUEST['courses']) && $_REQUEST['courses'] != '')
-            $mapsQuery .= "&courses=" . urlencode($_REQUEST['courses']) . "";
-        if(isset($_REQUEST['universities']) && $_REQUEST['universities'] != '')
-            $mapsQuery .= "&universities=" . urlencode($_REQUEST['universities']) . "";
-        if(isset($_REQUEST['featured_expert']) && $_REQUEST['featured_expert'] != '')
-            $mapsQuery .= "&featured_expert=" . urlencode($_REQUEST['featured_expert']) . "";
-        if(isset($_REQUEST['source_name']) && $_REQUEST['source_name'] != '')
-            $mapsQuery .= "&source_name=" . urlencode($_REQUEST['source_name']) . "";
+        /*
+         * site_event
+         * locn_type
+         * name
+         * tour stop
+         */
 
+        if(isset($_REQUEST['tour stop']) && $_REQUEST['tour stop'] != '')
+            $mapsQuery .= "&tour stop=" . urlencode($_REQUEST['tour stop']) . "";
 
         wp_enqueue_script('seaToSky-script-6', plugins_url( $mapsQuery, __FILE__), array('seaToSky-script-4','seaToSky-script-5'), 1, true );
 
@@ -369,7 +322,7 @@
 
     }
 
-    add_shortcode('makemap', 'seaToSky_map');
+    add_shortcode('makeskymap', 'seaToSky_map');
 
     /*
     Generates code for search results, calling seaToSky_map and seaToSky_list
@@ -440,7 +393,7 @@
                 <div class="seaToSky-search-left">
                     <div class="seaToSky-search-box">
                         <h3 style="margin: 0px; margin-top: 10px; padding: 0px; text-align: center">Basic Soil Search</h3>
-                        of ' . sizeof($seaToSkyFTResults['rows']) . ' SOILx sites
+                        of ' . sizeof($seaToSkyFTResults['rows']) . ' SeaToSky sites
                         <table>
                             <tr>
                                 <td>
@@ -708,9 +661,9 @@
         </form>
         <div class="seaToSky-search-right">
             <div class="seaToSky-search-box">
-                <p >The search page allows you to search and filter <strong>SOILx</strong> sites. Feel that only Cryosols are cool? Have a yearn-ozem for some Chernozem? Want to see only Podzols within 2&#176 of 49&#176 latitude used by UBC course APBI100? The search page can make all your dreams come true - just click \'Search\' when you\'re ready.</p>
+                <p >The search page allows you to search and filter <strong>SeaToSky</strong> sites. Feel that only Cryosols are cool? Have a yearn-ozem for some Chernozem? Want to see only Podzols within 2&#176 of 49&#176 latitude used by UBC course APBI100? The search page can make all your dreams come true - just click \'Search\' when you\'re ready.</p>
                 <p>Basic search criteria are on the left. Click the panes below them for additional search options. <strong>Be warned, though!</strong> Too many search terms will limit your results, for not all soil sites have information for all fields. For hints on creating and sharing useful searches, go to the <a href="../help">Help page</a>.</p>
-                <p>If you already know the <strong>SOILx</strong> number of the site you want to see, enter it below and click \'Go to Site\'.</p>
+                <p>If you already know the <strong>SeaToSky</strong> number of the site you want to see, enter it below and click \'Go to Site\'.</p>
                 <form name="site" style="text-align: center" action="../site/">
                     <input type="number" name="id" min="0" style="width:50px">
                     <input type="submit" style="margin-bottom:10px" value="Go to Site">
@@ -1247,10 +1200,10 @@
     function seaToSky_ft_data_callback_functions() {
     }
 
-    function gmp_update_options() {
+    /* function gmp_update_options() { // TODO: what was this for?
         if(isset($_POST['submit'])) {
         }
-    }
+    } */
 
     function seaToSky_instructions_initializer() {
         if ( !current_user_can( 'manage_options' ) )
@@ -1367,7 +1320,7 @@
     }
 
     function seaToSky_instructions_page() {
-        add_menu_page( 'SOILx Instructions and Options', 'SOILx', 'manage_options', 'seaToSky-instruction-page', 'seaToSky_instructions_initializer' );
+        add_menu_page( 'SeaToSky Instructions and Options', 'SeaToSky', 'manage_options', 'seaToSky-instruction-page', 'seaToSky_instructions_initializer' );
     }
 
     add_action( 'admin_menu', 'seaToSky_instructions_page' );

@@ -1,6 +1,6 @@
 <?php
 		header('Content-type: application/vnd.google-earth.kml+xml');
-    function soilweb_objectToArray($d) {
+    function seaToSky_objectToArray($d) {
 		if (is_object($d)) {
 			// Gets the properties of the given object
 			// with get_object_vars function
@@ -31,7 +31,7 @@
 
     $data = json_decode($jsonData);
 
-    $array = soilweb_objectToArray($data);
+    $array = seaToSky_objectToArray($data);
 
     // Temporary variable
 
