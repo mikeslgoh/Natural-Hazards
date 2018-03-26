@@ -4,6 +4,8 @@
     
         $jsonQuery = "leave_blank=''";
     
+        // EXAMPLE CODE
+    /* 
         if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
             $jsonQuery .= " AND id='" . $_REQUEST['id'] . "'";
         if(isset($_REQUEST['city']) && $_REQUEST['city'] != '')
@@ -39,7 +41,7 @@
             }
             $jsonQuery .= " AND longitude>=" . $minLon . "";
             $jsonQuery .= " AND longitude<=" . $maxLon . "";
-        }
+        } */
         
         echo 'google.load(\'visualization\', \'1\', {\'packages\':[\'corechart\', \'table\', \'geomap\']});
                     

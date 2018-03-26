@@ -49,7 +49,7 @@
     add_shortcode('maketabs', 'seaToSky_tabs');
 
     /*
-    Generates code for 'makeaccordions' shortcode, enqueuing seaToSky-accordions, which enables accordions in a page
+    Generates code for 'stk-accordions' shortcode, enqueuing seaToSky-accordions, which enables accordions in a page
     @since     1.0.0
     */
 
@@ -57,7 +57,7 @@
         wp_enqueue_script('seaToSky-script-2', plugins_url( '/js/seaToSky-accordions.js' , __FILE__ ), array('jquery-ui-accordion'));
     }
 
-    add_shortcode('makeaccordions', 'seaToSky_accordions');
+    add_shortcode('stk-accordions', 'seaToSky_accordions');
 
     /*
     Generates code for 'makesearchtech' shortcode, enqueuing seaToSky-list, which enables the conditional drop-down list for soil orders, great groups, and subgroups
@@ -170,67 +170,9 @@
         $jsonQuery = "";
 
         if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
-            $jsonQuery .= "+AND+id='" . urlencode($_REQUEST['id']) . "'";
-        if(isset($_REQUEST['soil_order']) && $_REQUEST['soil_order'] != '')
-            $jsonQuery .= "+AND+soil_order+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['soil_order']) . "'";
-        if(isset($_REQUEST['great_group']) && $_REQUEST['great_group'] != '')
-            $jsonQuery .= "+AND+great_group+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['great_group']) . "'";
-        if(isset($_REQUEST['subgroup']) && $_REQUEST['subgroup'] != '')
-            $jsonQuery .= "+AND+subgroup+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['subgroup']) . "'";
-        if(isset($_REQUEST['ecosystem']) && $_REQUEST['ecosystem'] != '')
-            $jsonQuery .= "+AND+ecosystem+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['ecosystem']) . "'";
-        if(isset($_REQUEST['bc_biogeoclimatic_zone']) && $_REQUEST['bc_biogeoclimatic_zone'] != '')
-            $jsonQuery .= "+AND+bc_biogeoclimatic_zone='" . urlencode($_REQUEST['bc_biogeoclimatic_zone']) . "'";
-        if(isset($_REQUEST['climate_zone']) && $_REQUEST['climate_zone'] != '')
-            $jsonQuery .= "+AND+climate_zone+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['climate_zone']) . "'";
-        if(isset($_REQUEST['soil_texture_diag']) && $_REQUEST['soil_texture_diag'] != '')
-            $jsonQuery .= "+AND+soil_texture_diag+=+'" . urlencode($_REQUEST['soil_texture_diag']) . "'";
-        if(isset($_REQUEST['parent_material']) && $_REQUEST['parent_material'] != '')
-            $jsonQuery .= "+AND+parent_material+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['parent_material']) . "'";
-        if(isset($_REQUEST['primary_soil_process_group']) && $_REQUEST['primary_soil_process_group'] != '')
-            $jsonQuery .= "+AND+primary_soil_process_group+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['primary_soil_process_group']) . "'";
-        if(isset($_REQUEST['place_name']) && $_REQUEST['place_name'] != '')
-            $jsonQuery .= "+AND+place_name+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['place_name']) . "'";
-        if(isset($_REQUEST['city']) && $_REQUEST['city'] != '')
-            $jsonQuery .= "+AND+city+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['city']) . "'";
-        if(isset($_REQUEST['region']) && $_REQUEST['region'] != '')
-            $jsonQuery .= "+AND+region+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['region']) . "'";
-        if(isset($_REQUEST['country']) && $_REQUEST['country'] != '')
-            $jsonQuery .= "+AND+country+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['country']) . "'";
-        if(isset($_REQUEST['planet']) && $_REQUEST['planet'] != '')
-            $jsonQuery .= "+AND+planet+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['planet']) . "'";
-        if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
-            $temp = 0;
-            if(isset($_REQUEST['degrees']))
-                $temp = urlencode($_REQUEST['degrees']);
-            $minLat = urlencode($_REQUEST['latitude']) - $temp;
-            $maxLat = urlencode($_REQUEST['latitude']) + $temp;
-            $jsonQuery .= "+AND+latitude>=" . $minLat . "";
-            $jsonQuery .= "+AND+latitude<=" . $maxLat . "";
-        }
-        if(isset($_REQUEST['longitude']) && $_REQUEST['longitude'] != '') {
-            $temp = 0;
-            if(isset($_REQUEST['degrees']))
-                $temp = urlencode($_REQUEST['degrees']);
-            $minLon = urlencode($_REQUEST['longitude']) - $temp;
-            $maxLon = urlencode($_REQUEST['longitude']) + $temp;
-            $jsonQuery .= "+AND+longitude>=" . $minLon . "";
-            $jsonQuery .= "+AND+longitude<=" . $maxLon . "";
-        }
-        if(isset($_REQUEST['min_ele']) && $_REQUEST['min_ele'] != '')
-            $jsonQuery .= "+AND+elevation>" . urlencode($_REQUEST['min_ele']) . "";
-        if(isset($_REQUEST['max_ele']) && $_REQUEST['max_ele'] != '')
-            $jsonQuery .= "+AND+elevation<" . urlencode($_REQUEST['max_ele']) . "";
-        if(isset($_REQUEST['courses']) && $_REQUEST['courses'] != '')
-            $jsonQuery .= "+AND+courses+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['courses']) . "'";
-        if(isset($_REQUEST['universities']) && $_REQUEST['universities'] != '')
-            $jsonQuery .= "+AND+universities+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['universities']) . "'";
-        if(isset($_REQUEST['featured_expert']) && $_REQUEST['featured_expert'] != '')
-            $jsonQuery .= "+AND+featured_expert+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['featured_expert']) . "'";
-        if(isset($_REQUEST['source_name']) && $_REQUEST['source_name'] != '')
-            $jsonQuery .= "+AND+source_name+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['source_name']) . "'";
+            $jsonQuery .= "key_id='" . urlencode($_REQUEST['id']) . "'";
 
-        $jsonWhere = "+WHERE+leave_blank=''";
+        $jsonWhere = "+WHERE+";
 
         $jsonEnd = '&key=';
 
@@ -295,7 +237,7 @@
     add_shortcode('makelist', 'seaToSky_list');
 
     /*
-     Generates code for 'makemap' shortcode, creating a map in a page
+     Generates code for 'stk-map' shortcode, creating a map in a page
      @since     1.0.0
      @return    string  HTML
      */
@@ -306,23 +248,13 @@
 
          $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
 
-        /*
-         * site_event
-         * locn_type
-         * name
-         * tour stop
-         */
-
-        if(isset($_REQUEST['tour stop']) && $_REQUEST['tour stop'] != '')
-            $mapsQuery .= "&tour stop=" . urlencode($_REQUEST['tour stop']) . "";
-
         wp_enqueue_script('seaToSky-script-6', plugins_url( $mapsQuery, __FILE__), array('seaToSky-script-4','seaToSky-script-5'), 1, true );
 
         return '<div id="googft-mapCanvas" style="width:100%; height:550px;"></div>';
 
     }
 
-    add_shortcode('makeskymap', 'seaToSky_map');
+    add_shortcode('stk-map', 'seaToSky_map');
 
     /*
     Generates code for search results, calling seaToSky_map and seaToSky_list
@@ -678,7 +610,7 @@
     add_shortcode('makesearch', 'seaToSky_search');
 
     /*
-     Generates code for 'makesite' shortcode, creating a soil site page
+     Generates code for 'stk-site' shortcode, creating a soil site page
      @since     1.0.0
      @return    string  HTML
      */
@@ -698,58 +630,14 @@
         if($id != 0) {
             if(sizeof($seaToSkyFTResults) != 2) {
 
+                $selectedSite = $seaToSkyFTResults['rows'][0];
 
                 $completeSite = '
                     <div class="seaToSky-content-top"><h3>Site '
-                    .esc_html($seaToSkyFTResults['rows'][0][1]).
+                    .esc_html($selectedSite[1]).
                     ': '
-                    .esc_html($seaToSkyFTResults['rows'][0][2])
+                    .esc_html($selectedSite[2])
                 ;
-
-                if(esc_html($seaToSkyFTResults['rows'][0][3] != "")) {
-                    $completeSite .= '
-                        ('
-                        .esc_html($seaToSkyFTResults['rows'][0][3]).
-                        ')
-                    ';
-                }
-
-                $completeSite .= '
-                    </h3><p>'
-                    .esc_html($seaToSkyFTResults['rows'][0][50]).
-                    '</p>
-                ';
-
-                if(esc_html($seaToSkyFTResults['rows'][0][5] != "") || esc_html($seaToSkyFTResults['rows'][0][4] != "")) {
-                    $completeSite .= '
-                        <p style="text-align: right; color: #aaa">Source:
-                    ';
-
-                    if(esc_html($seaToSkyFTResults['rows'][0][5] != "")) {
-                        $completeSite .= '
-                            <a href="'
-                            .esc_html($seaToSkyFTResults['rows'][0][5]).
-                            '" style="color: #aaa">
-                        ';
-                    }
-                    if(esc_html($seaToSkyFTResults['rows'][0][4] != "")) {
-                        $completeSite .=
-                            esc_html($seaToSkyFTResults['rows'][0][4])
-                        ;
-                    } else {
-                        $completeSite .=
-                            esc_html($seaToSkyFTResults['rows'][0][5])
-                        ;
-                    }
-                    if(esc_html($seaToSkyFTResults['rows'][0][5] != "")) {
-                        $completeSite .= '
-                            </a>
-                        ';
-                    }
-                    $completeSite .= '
-                        </p>
-                    ';
-                }
 
                 $completeSite .= '
                     </div>
@@ -759,164 +647,43 @@
                 $completeSite .= '
                     <div class="seaToSky-site-left">
                     <div class="seaToSky-content-box">
-                        <h3>Basic Facts</h3>
-                        <p><strong>Soil Order: </strong>'
-                        .esc_html($seaToSkyFTResults['rows'][0][16]).
-                        '<br /><strong>Ecosystem: </strong>'
-                        .esc_html($seaToSkyFTResults['rows'][0][32]).
-                        '<br /><strong>Climate Zone: </strong>'
-                        .esc_html($seaToSkyFTResults['rows'][0][36]).
-                        '<br /><strong>BC Biogeoclimatic Zone: </strong>'
-                        .esc_html($seaToSkyFTResults['rows'][0][30]).
-                        '</p><p><strong>Location: </strong><a href="../results/?id='
-                        .esc_html($seaToSkyFTResults['rows'][0][1]).
-                        '">'
-                        .esc_html($seaToSkyFTResults['rows'][0][12]).
-                        ' (map)</a><br /><strong>City, Region, Country: </strong>'
-                        .esc_html($seaToSkyFTResults['rows'][0][13]).
-                        ', '
-                        .esc_html($seaToSkyFTResults['rows'][0][14]).
-                        ', '
-                        .esc_html($seaToSkyFTResults['rows'][0][15]).
-                        '</p>
+                        <h3>Basic Facts<h3>
+                        ...
                     </div>
                 ';
 
                 $completeSite .= '
                     <div id="seaToSky-accordion-1">
                         <div class="seaToSky-accordion-title-1">
-                            Soil Classification
+                            INFO 1
                         </div>
                         <div class="seaToSky-accordion-pane-1">
                             <p><strong>Soil Order: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][16]).
+                            .esc_html($selectedSite[16]).
                             '<br /><strong>Great Group: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][17]).
-                            '<br /><strong>Subgroup: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][18]).
-                            '<br /><strong>Soil Series: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][19]).
-                            '<br /><strong>Classification Code: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][20]).
-                            '<br /><strong>Soil Horizons Present: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][25]).
-                            '<br /><strong>Diagnostic Horizon 1: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][21]).
-                            '<br /><strong>Diagnostic Horizon 2: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][22]).
-                            '<br /><strong>Diagnostic Horizon 3: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][23]).
-                            '<br /><strong>Diagnostic Horizon 4: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][24]).
+                            .esc_html($selectedSite[17]).
                             '</p>
                         </div>
                     </div>
 
                     <div id="seaToSky-accordion-2">
                         <div class="seaToSky-accordion-title-2">
-                            Land Form
+                            INFO 2
                         </div>
                         <div class="seaToSky-accordion-pane-1">
                             <p><strong>Land Form: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][27]).
+                            .esc_html($selectedSite[27]).
                             '<br /><strong>Parent Material: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][28]).
+                            .esc_html($selectedSite[28]).
                             '<br /><strong>Elevation (m): </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][26]).
+                            .esc_html($selectedSite[26]).
                             '<br /><strong>Topography: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][29]).
+                            .esc_html($selectedSite[29]).
                             '<br /><strong>Affected by Glaciation: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][31]).
+                            .esc_html($selectedSite[31]).
                             '</p>
                         </div>
                     </div>
-
-                    <div id="seaToSky-accordion-3">
-                        <div class="seaToSky-accordion-title-3">
-                           Climate
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p><strong>Climate Zone: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][36]).
-                            '<br /><strong>Mean Annual Temperature (C): </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][37]).
-                            '<br /><strong>Minimum Annual Temperature (C): </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][38]).
-                            '<br /><strong>Maximum Annual Temperature (C): </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][39]).
-                            '<br /><strong>Mean Annual Precipitation (mm): </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][40]).
-                            '</p>
-                        </div>
-                    </div>
-
-                    <div id="seaToSky-accordion-4">
-                        <div class="seaToSky-accordion-title-4">
-                           Land Use
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p><strong>Current Land Use: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][35]).
-                            '<br /><strong>Original Vegetation: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][34]).
-                            '<br /><strong>Current Vegetation: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][33]).
-                            '</p>
-                        </div>
-                    </div>
-
-                    <div id="seaToSky-accordion-5">
-                        <div class="seaToSky-accordion-title-5">
-                            Technical Description
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p>'
-                            .esc_html($seaToSkyFTResults['rows'][0][51]).
-                            '</p>';
-                            if(esc_html($seaToSkyFTResults['rows'][0][65]) != "") {
-                                $completeSite .= '<p><strong>For more information, click here:</strong>
-                                    <a href="'
-                                    .esc_url($seaToSkyFTResults['rows'][0][65]).
-                                    '"><img src="http://ar-seaToSky.sites.olt.ubc.ca/files/2013/07/Adobe_PDF_Icon.png" alt="PDF" style="display: block">(PDF)</a> '
-                                    .esc_html($seaToSkyFTResults['rows'][0][64]).
-                                    '</p>
-                                ';
-                            }
-                        $completeSite .= '</div>
-                    </div>
-
-                    <div id="seaToSky-accordion-6">
-                        <div class="seaToSky-accordion-title-6">
-                            Soil Morphology
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p><strong>Soil Texture of Diagnostic Horizon or Prevailing Texture: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][41]).
-                            '<br /><strong>Forest Humus Form: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][44]).
-                            '<br /><strong>Presence of Charcoal: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][45]).
-                            '<br /><strong>Presence of Coatings: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][46]).
-                            '</p>
-                        </div>
-                    </div>
-
-                    <div id="seaToSky-accordion-7">
-                        <div class="seaToSky-accordion-title-7">
-                            Soil Formation Processes
-                        </div>
-                        <div class="seaToSky-accordion-pane-2">
-                            <p><strong>Primary Soil Process Group: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][47]).
-                            '<br /><strong>Primary Soil Process: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][48]).
-                            '<br /><strong>Secondary Soil Process: </strong>'
-                            .esc_html($seaToSkyFTResults['rows'][0][49]).
-                            '</p>
-                        </div>
-                    </div>
-
                 ';
 
                 $completeSite .= '</div>
@@ -925,29 +692,30 @@
                     <h3>Media</h3>
                 ';
 
-                if(esc_url($seaToSkyFTResults['rows'][0][66]) != "") {
+                // If there is a video that wants to be inserted
+                if(esc_url($selectedSite[66]) != "") {
                     $completeSite .= '
                         <iframe width="100%" height="300" src="'
-                        . esc_url($seaToSkyFTResults['rows'][0][66]) .
+                        . esc_url($selectedSite[66]) .
                         '" frameborder="0" allowfullscreen></iframe>
                     ';
-                    if(esc_html($seaToSkyFTResults['rows'][0][67]) != "" || esc_html($seaToSkyFTResults['rows'][0][68]) != "") {
+                    if(esc_html($selectedSite[67]) != "" || esc_html($selectedSite[68]) != "") {
                         $completeSite .= '
                             <p style="text-align: center">
                         ';
-                        if(esc_html($seaToSkyFTResults['rows'][0][67]) != "") {
+                        if(esc_html($selectedSite[67]) != "") {
                             $completeSite .= '
                                 Featured expert: '
-                                . esc_html($seaToSkyFTResults['rows'][0][67])
+                                . esc_html($selectedSite[67])
                             ;
-                            if(esc_html($seaToSkyFTResults['rows'][0][68]) != "") {
+                            if(esc_html($selectedSite[68]) != "") {
                                 $completeSite .= '<br />';                        ;
                         }
                         }
-                        if(esc_html($seaToSkyFTResults['rows'][0][68]) != "") {
+                        if(esc_html($selectedSite[68]) != "") {
                             $completeSite .= '
                                 Video host: '
-                                . esc_html($seaToSkyFTResults['rows'][0][68])
+                                . esc_html($selectedSite[68])
                             ;
                         }
                         $completeSite .= '
@@ -955,71 +723,71 @@
                         ';
                     }
                 }
-                if(esc_url($seaToSkyFTResults['rows'][0][70]) != "") {
+                if(esc_url($selectedSite[70]) != "") {
                     $completeSite .= '
                         <img width="100%" src="'
-                        . esc_url($seaToSkyFTResults['rows'][0][70]) .
+                        . esc_url($selectedSite[70]) .
                         '" alt="'
-                        . $seaToSkyFTResults['rows'][0][69] .
+                        . $selectedSite[69] .
                         '">
                     ';
-                    if(esc_html($seaToSkyFTResults['rows'][0][69]) != "") {
+                    if(esc_html($selectedSite[69]) != "") {
                         $completeSite .= '
                             <p style="text-align: center">'
-                            . esc_html($seaToSkyFTResults['rows'][0][69]) .
+                            . esc_html($selectedSite[69]) .
                             '</p>
                         ';
                     }
                 }
-                if(esc_url($seaToSkyFTResults['rows'][0][72]) != "") {
+                if(esc_url($selectedSite[72]) != "") {
                     $completeSite .= '
                         <img width="100%" src="'
-                        . esc_url($seaToSkyFTResults['rows'][0][72]) .
+                        . esc_url($selectedSite[72]) .
                         '" alt="'
-                        . $seaToSkyFTResults['rows'][0][71] .
+                        . $selectedSite[71] .
                         '">
                     ';
-                    if(esc_html($seaToSkyFTResults['rows'][0][71]) != "") {
+                    if(esc_html($selectedSite[71]) != "") {
                         $completeSite .= '
                             <p style="text-align: center">'
-                            . esc_html($seaToSkyFTResults['rows'][0][71]) .
+                            . esc_html($selectedSite[71]) .
                             '</p>
                         ';
                     }
                 }
-                if(esc_url($seaToSkyFTResults['rows'][0][74]) != "") {
+                if(esc_url($selectedSite[74]) != "") {
                     $completeSite .= '
                         <img width="100%" src="'
-                        . esc_url($seaToSkyFTResults['rows'][0][74]) .
+                        . esc_url($selectedSite[74]) .
                         '" alt="'
-                        . $seaToSkyFTResults['rows'][0][73] .
+                        . $selectedSite[73] .
                         '">
                     ';
-                    if(esc_html($seaToSkyFTResults['rows'][0][73]) != "") {
+                    if(esc_html($selectedSite[73]) != "") {
                         $completeSite .= '
                             <p style="text-align: center">'
-                            . esc_html($seaToSkyFTResults['rows'][0][73]) .
+                            . esc_html($selectedSite[73]) .
                             '</p>
                         ';
                     }
                 }
-                if(esc_url($seaToSkyFTResults['rows'][0][76]) != "") {
+                if(esc_url($selectedSite[76]) != "") {
                     $completeSite .= '
                         <img width="100%" src="'
-                        . esc_url($seaToSkyFTResults['rows'][0][76]) .
+                        . esc_url($selectedSite[76]) .
                         '" alt="'
-                        . $seaToSkyFTResults['rows'][0][75] .
+                        . $selectedSite[75] .
                         '">
                     ';
-                    if(esc_html($seaToSkyFTResults['rows'][0][75]) != "") {
+                    if(esc_html($selectedSite[75]) != "") {
                         $completeSite .= '
                             <p style="text-align: center">'
-                            . esc_html($seaToSkyFTResults['rows'][0][75]) .
+                            . esc_html($selectedSite[75]) .
                             '</p>
                         ';
                     }
                 }
-                if(esc_url($seaToSkyFTResults['rows'][0][66]) == "" && esc_url($seaToSkyFTResults['rows'][0][70] && esc_url($seaToSkyFTResults['rows'][0][72]) == "" && esc_url($seaToSkyFTResults['rows'][0][74]) == "" && esc_url($seaToSkyFTResults['rows'][0][76]) == "") == "") {
+                if(esc_url($selectedSite[66]) == "" && esc_url($selectedSite[70] && esc_url($selectedSite[72]) == "" && esc_url($selectedSite[74]) == "" && esc_url($selectedSite[76]) == "") == "") {
                     $completeSite .= '
                         <img width="100%" src="http://ar-seaToSky.sites.olt.ubc.ca/files/2013/07/oops.png" alt="No media found">
                     ';
@@ -1030,63 +798,64 @@
                     <h3>Links</h3>
                 ';
 
-                if(esc_url($seaToSkyFTResults['rows'][0][53]) != '' || esc_url($seaToSkyFTResults['rows'][0][55]) != '' || esc_url($seaToSkyFTResults['rows'][0][57]) != '' || esc_url($seaToSkyFTResults['rows'][0][59]) != '' || esc_url($seaToSkyFTResults['rows'][0][61]) != '' || esc_url($seaToSkyFTResults['rows'][0][63]) != '') {
+                // Insert external links here
+                if(esc_url($selectedSite[53]) != '' || esc_url($selectedSite[55]) != '' || esc_url($selectedSite[57]) != '' || esc_url($selectedSite[59]) != '' || esc_url($selectedSite[61]) != '' || esc_url($selectedSite[63]) != '') {
 
                     $completeSite .= '
                         <p>
                     ';
 
-                    if(esc_url($seaToSkyFTResults['rows'][0][53]) != '') {
+                    if(esc_url($selectedSite[53]) != '') {
                         $completeSite .= '
                             <strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][53]) .
+                            . esc_url($selectedSite[53]) .
                             '">'
-                            . esc_html($seaToSkyFTResults['rows'][0][52]) .
+                            . esc_html($selectedSite[52]) .
                             '</a>
                         ';
                     }
-                    if(esc_url($seaToSkyFTResults['rows'][0][55]) != '') {
+                    if(esc_url($selectedSite[55]) != '') {
                         $completeSite .= '
                             <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][55]) .
+                            . esc_url($selectedSite[55]) .
                             '">'
-                            . esc_html($seaToSkyFTResults['rows'][0][54]) .
+                            . esc_html($selectedSite[54]) .
                             '</a>
                         ';
                     }
-                    if(esc_url($seaToSkyFTResults['rows'][0][57]) != '') {
+                    if(esc_url($selectedSite[57]) != '') {
                         $completeSite .= '
                             <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][57]) .
+                            . esc_url($selectedSite[57]) .
                             '">'
-                            . esc_html($seaToSkyFTResults['rows'][0][56]) .
+                            . esc_html($selectedSite[56]) .
                             '</a>
                         ';
                     }
-                    if(esc_url($seaToSkyFTResults['rows'][0][59]) != '') {
+                    if(esc_url($selectedSite[59]) != '') {
                         $completeSite .= '
                             <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][59]) .
+                            . esc_url($selectedSite[59]) .
                             '">'
-                            . esc_html($seaToSkyFTResults['rows'][0][58]) .
+                            . esc_html($selectedSite[58]) .
                             '</a>
                         ';
                     }
-                    if(esc_url($seaToSkyFTResults['rows'][0][61]) != '') {
+                    if(esc_url($selectedSite[61]) != '') {
                         $completeSite .= '
                             <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][61]) .
+                            . esc_url($selectedSite[61]) .
                             '">'
-                            . $seaToSkyFTResults['rows'][0][60] .
+                            . $selectedSite[60] .
                             '</a>
                         ';
                     }
-                    if(esc_url($seaToSkyFTResults['rows'][0][63]) != '') {
+                    if(esc_url($selectedSite[63]) != '') {
                         $completeSite .= '
                             <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($seaToSkyFTResults['rows'][0][63]) .
+                            . esc_url($selectedSite[63]) .
                             '">'
-                            . esc_html($seaToSkyFTResults['rows'][0][62]) .
+                            . esc_html($selectedSite[62]) .
                             '</a>
                         ';
                     }
@@ -1117,7 +886,7 @@
         return $completeSite;
 
     }
-    add_shortcode('makesite', 'seaToSky_site');
+    add_shortcode('stk-site', 'seaToSky_site');
 
     /*
      Consumes a std object and makes from it a PHP array
