@@ -630,19 +630,27 @@
         if($id != 0) {
             if(sizeof($seaToSkyFTResults) != 2) {
 
-                $selectedSite = $seaToSkyFTResults['rows'][0];
+                $selectedSite = [];
+                $x = 0;
+                $rowData = $seaToSkyFTResults['rows'][0];
+                $columnNames = $seaToSkyFTResults['columns'];
+
+                // Create an associative array so that columnName points to the row data for the individual site
+                foreach($columnNames as $column){
+                    $selectedSite[$column] = $rowData[$x];
+                    $x++;
+                }
 
                 $completeSite = '
                     <div class="seaToSky-content-top"><h3>Site '
-                    .esc_html($selectedSite[1]).
+                    .esc_html($selectedSite["key_id"]).
                     ': '
-                    .esc_html($selectedSite[2])
+                    .esc_html($selectedSite["name"])
                 ;
 
                 $completeSite .= '
                     </div>
                 ';
-
 
                 $completeSite .= '
                     <div class="seaToSky-site-left">
@@ -898,7 +906,7 @@
 		if (is_object($seaToSkyFTReturn)) {
 			// Gets the properties of the given object
 			// with get_object_vars function
-			$seaToSkyFTReturn = get_object_vars($seaToSkyFTReturn);
+            $seaToSkyFTReturn = (array)$seaToSkyFTReturn;
 		}
 
 		if (is_array($seaToSkyFTReturn)) {
