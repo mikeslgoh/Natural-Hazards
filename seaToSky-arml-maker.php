@@ -21,11 +21,13 @@
 		}
 	}
 
-    $jsonQuery = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+1rCXW4hvPhZgGk0rc1f1XQ8S5nvScI2j92UOWkMIR';
+    $jsonQuery = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+';
+
+    $tableID = '1E6huUsmEf70Sh14ExFQpQ8650fuCFT7kBFSbv4Xu';
 
     $jsonEnd = '&key=AIzaSyCvt65SJjqXPoa9gjl2zxFLdQaiVL990eU';
 
-    $jsonQuery .= $jsonEnd;
+    $jsonQuery .= $tableID.$jsonEnd;
 
     $jsonData = file_get_contents($jsonQuery);
 

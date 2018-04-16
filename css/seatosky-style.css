@@ -3,7 +3,7 @@
 
 .seaToSky-search-left, .seaToSky-site-left {
     float: left;
-    width: 48%;
+    width: 60%;
 }
 
 .seaToSky-search-right, .seaToSky-site-right {
@@ -22,8 +22,8 @@
 .seaToSky-content-top h3, .seaToSky-content-media h3, .seaToSky-content-box h3, .seaToSky-content-links h3 {
     color:#542437;
     padding:0;
-    margin:10px 0;
-    text-align: center;
+    margin:10px;
+    text-align: left;
 }
 
 .seaToSky-content-top p, .seaToSky-content-media p, .seaToSky-content-box p, .seaToSky-content-links p {

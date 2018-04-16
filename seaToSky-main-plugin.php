@@ -26,11 +26,16 @@
 
      */
 
+    // GLOBAL VARIABLE
+    $dropdownCategories = ['item_type', 'experience', 'assoc_institutions', 'assoc_courses',
+    'tour_name', 'city', 'region', 'country', 'framework_concept', 'source1_type', 'source2_type', 'indepth_type'];
+    $textFieldCategories =['short_description', 'long_description', 'study_questions', 'item_name'];
+    
+
     /*
     Queues the seaToSky-style stylesheet, enabling formatting for seaToSky panes
     @since     1.0.0
     */
-
     function seaToSky_enqueue_style_1(){
         wp_enqueue_style('seaToSky-style-1', plugins_url( '/css/seaToSky-style.css' , __FILE__) );
     }
@@ -46,7 +51,7 @@
         wp_enqueue_script('seaToSky-script-1', plugins_url( '/js/seaToSky-tabs.js' , __FILE__ ), array('jquery-ui-tabs'));
     }
 
-    add_shortcode('maketabs', 'seaToSky_tabs');
+    add_shortcode('stk-tabs', 'seaToSky_tabs');
 
     /*
     Generates code for 'stk-accordions' shortcode, enqueuing seaToSky-accordions, which enables accordions in a page
@@ -70,13 +75,174 @@
 
     add_shortcode('makesearchtech', 'seaToSky_searchtech');
 
+    /*
+     Queries the Fusion Table, returning a std object
+     @since     1.0.0
+     @return    array  PHP array of results
+     */
+
+    function seaToSky_FT_query() {
+
+        $jsonStart = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+';
+
+        $jsonStart .= get_option('seaToSky_ft_address');
+
+        $jsonQuery = seaToSky_FT_queryParams();
+
+        $jsonSort = "+ORDER+BY+tour_stop+";
+        $jsonWhere = "+WHERE+";
+
+        $jsonEnd = '&key=';
+
+        $jsonEnd .= get_option('seaToSky_ft_key');
+
+        if($jsonQuery !== "")
+            $jsonStart .= $jsonWhere;
+
+        $jsonStart .= $jsonQuery;
+
+        $jsonStart .= $jsonSort;
+
+        $jsonStart .= $jsonEnd;
+
+        $jsonData = file_get_contents($jsonStart);
+
+        $PHPdata = json_decode($jsonData);
+
+        $seaToSkyFTResults = seaToSky_objectToArray($PHPdata);
+
+        return $seaToSkyFTResults;
+    }
+
+    function seaToSky_FT_general_query(){
+        $jsonStart = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+';
+
+        $jsonStart .= get_option('seaToSky_ft_address');
+
+        $jsonStart .= "+ORDER+BY+tour_stop+";
+
+        $jsonStart .= '&key=';
+
+        $jsonStart .= get_option('seaToSky_ft_key');
+
+        $jsonData = file_get_contents($jsonStart);
+
+        $PHPdata = json_decode($jsonData);
+
+        return seaToSky_objectToArray($PHPdata);
+    }
+
+    function seaToSky_FT_queryParams(){
+        $jsonQuery = "";
+
+        if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
+            $jsonQuery .= "tour_stop='" . urlencode($_REQUEST['id']) . "'";
+        
+        $index = 0;
+
+        foreach($GLOBALS['dropdownCategories'] as $field){
+            if(isset($_REQUEST[$field]) && $_REQUEST[$field] != ''){
+                if($index === 0)
+                {
+                    $jsonQuery .= $field ."='".$_REQUEST[$field]."'";
+                    $index++;
+                }
+                else
+                {
+                    $jsonQuery .= '+AND+'.$field ."='". $_REQUEST[$field]."'";
+                }
+            }
+        }
+        
+        // if(isset($_REQUEST['place_name']) && $_REQUEST['place_name'] != '')
+        //     $jsonQuery .= "+AND+place_name+CONTAINS+IGNORING+CASE+'" . urlencode($_REQUEST['place_name']) . "'";
+        
+        return $jsonQuery;
+    }
+    /*
+     Generates code for 'stk-list' shortcode, creating a list of search results
+     @since     1.0.0
+     @return    string  HTML
+     */
+
+    function seaToSky_list($seaToSkyFTResults) {
+        $sites = getQueryData($seaToSkyFTResults);
+        $temp = sizeof($sites);
+
+            // Make a table with a header for the information
+            $tableHTML = '
+                <table align="center" cellspacing="3" cellpadding="3" width="100%" style="margin:0px">
+                    <tr>
+                        <td align="left"><strong>Tour Stop</strong></td>
+                        <td align="left"><strong>Site Name</strong></td>
+                        <td align="left"><strong>Type</strong></td>
+                        <td align="left"><strong>Framework concept</strong></td>
+                    </tr>
+            ';
+
+            // dummysite remove !!!
+            for($i = 0; $i < $temp; $i++) {
+                $tableHTML .= '
+                    <tr>
+                        <td align="left">' . esc_html($sites[$i]['tour_stop']) . '</td>
+                        <td align="left"><a target="blank_" href="../sea2Sky-site-page/?id=' . esc_html($sites[$i]['tour_stop']) . '">' . esc_html($sites[$i]['item_name']) . '</a></td>
+                        <td align="left">' . esc_html($sites[$i]['item_type']) . '</td>
+                        <td align="left">' . esc_html($sites[$i]['framework_concept']) . '</td>
+                    </tr>
+                ';
+            }
+
+            $tableHTML .= '
+                </table>
+            ';
+
+        return $tableHTML;
+
+    }
+
+    add_shortcode('stk-list', 'seaToSky_list');
+
+    /*
+     Generates code for 'stk-map' shortcode, creating a map in a page
+     @since     1.0.0
+     @return    string  HTML
+     */
+
+    function seaToSky_map() {
+         wp_enqueue_script('seaToSky-script-4', 'http://www.google.com/jsapi', array(), 1, true );
+         wp_enqueue_script('seaToSky-script-5', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
+
+         $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
+        $mapsQuery .= getMapQuery();
+
+        wp_enqueue_script('seaToSky-script-6', plugins_url( $mapsQuery, __FILE__), array('seaToSky-script-4','seaToSky-script-5'), 1, true );
+
+        return '<div id="googft-mapCanvas" style="width:100%; height:550px;"></div>';
+
+    }
+
+    add_shortcode('stk-map', 'seaToSky_map');
+
+    /*
+     * Helper function to pull the paramaters to be quried for map pins
+     */
+    function getMapQuery(){
+        $jsonQuery = "";
+
+        foreach($GLOBALS['dropdownCategories'] as $field){
+            if(isset($_REQUEST[$field]) && $_REQUEST[$field] != ''){
+                    $jsonQuery .= '&'.$field ."=".urlencode($_REQUEST[$field])."";
+            }
+        }
+        
+        return $jsonQuery;
+    }
 
     /*
     Generates code for 'makefilter' shortcode, creating a filter box for quick searches
     @since     1.0.0
     @return    string  HTML
     */
-
     function seaToSky_filter() {
 
         $randInt = rand();
@@ -156,111 +322,9 @@
     add_shortcode('makefilter', 'seaToSky_filter');
 
     /*
-     Queries the Fusion Table, returning a std object
-     @since     1.0.0
-     @return    array  PHP array of results
-     */
-
-    function seaToSky_FT_query() {
-
-        $jsonStart = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+*+FROM+';
-
-        $jsonStart .= get_option('seaToSky_ft_address');
-
-        $jsonQuery = "";
-
-        if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
-            $jsonQuery .= "key_id='" . urlencode($_REQUEST['id']) . "'";
-
-        $jsonWhere = "+WHERE+";
-
-        $jsonEnd = '&key=';
-
-        $jsonEnd .= get_option('seaToSky_ft_key');
-
-        $jsonStart .= $jsonWhere;
-
-        $jsonStart .= $jsonQuery;
-
-        $jsonStart .= $jsonEnd;
-
-        $jsonData = file_get_contents($jsonStart);
-
-        $PHPdata = json_decode($jsonData);
-
-        $seaToSkyFTResults = seaToSky_objectToArray($PHPdata);
-
-        return $seaToSkyFTResults;
-
-    }
-
-    /*
-     Generates code for 'makelist' shortcode, creating a list of search results
-     @since     1.0.0
-     @return    string  HTML
-     */
-
-    function seaToSky_list($seaToSkyFTResults) {
-
-        $temp = sizeof($seaToSkyFTResults['rows']);
-
-            // Make a table with a header for the information
-            $tableHTML = '
-                <table align="center" cellspacing="3" cellpadding="3" width="100%" style="margin:0px">
-                    <tr>
-                        <td align="left"><strong>ID</strong></td>
-                        <td align="left"><strong>Site Name</strong></td>
-                        <td align="left"><strong>Soil Order</strong></td>
-                        <td align="left"><strong>Region</strong></td>
-                    </tr>
-            ';
-
-            for($i = 0; $i < $temp; $i++) {
-                $tableHTML .= '
-                    <tr>
-                        <td align="left">' . esc_html($seaToSkyFTResults['rows'][$i][1]) . '</td>
-                        <td align="left"><a href="site/?id=' . esc_html($seaToSkyFTResults['rows'][$i][1]) . '">' . esc_html($seaToSkyFTResults['rows'][$i][2]) . '</a></td>
-                        <td align="left">' . esc_html($seaToSkyFTResults['rows'][$i][16]) . '</td>
-                        <td align="left">' . esc_html($seaToSkyFTResults['rows'][$i][14]) . '</td>
-                    </tr>
-                ';
-            }
-
-            $tableHTML .= '
-                </table>
-            ';
-
-        return $tableHTML;
-
-    }
-
-    add_shortcode('makelist', 'seaToSky_list');
-
-    /*
-     Generates code for 'stk-map' shortcode, creating a map in a page
-     @since     1.0.0
-     @return    string  HTML
-     */
-
-    function seaToSky_map() {
-         wp_enqueue_script('seaToSky-script-4', 'http://www.google.com/jsapi', array(), 1, true );
-         wp_enqueue_script('seaToSky-script-5', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
-
-         $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
-
-        wp_enqueue_script('seaToSky-script-6', plugins_url( $mapsQuery, __FILE__), array('seaToSky-script-4','seaToSky-script-5'), 1, true );
-
-        return '<div id="googft-mapCanvas" style="width:100%; height:550px;"></div>';
-
-    }
-
-    add_shortcode('stk-map', 'seaToSky_map');
-
-    /*
     Generates code for search results, calling seaToSky_map and seaToSky_list
     @since     1.0.0
     */
-
     function seaToSky_results() {
 
         $seaToSkyFTResults = seaToSky_FT_query();
@@ -296,195 +360,48 @@
         }
 
     }
-    add_shortcode('makeresults', 'seaToSky_results');
+    add_shortcode('stk-results', 'seaToSky_results');
 
     /*
      Generates code for 'makesearch' shortcode, creating a search page
      @since     1.0.0
      @return    string  HTML
      */
-
+    
+     // !!!
     function seaToSky_search() {
 
-        $jsonStart = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+id+FROM+';
+        $seaToSkyFTResults = seaToSky_FT_general_query();
+        $sites = getQueryData($seaToSkyFTResults);
+        $numberOfSites = sizeof($sites);
 
-        $jsonStart .= get_option('seaToSky_ft_address');
+        $returnString = 
+        '
+        <form name="seaToSky_search" style="text-align: left" action="../sea2sky-results/" method="GET" onload="fillCategory();">
+            <div class="seaToSky-content-top">
+                <div>
+                    <h3 style="margin: 0px; margin-top: 10px; padding: 0px; text-align: center">Basic Site Search</h3>
+                    <div style="text-align: center"> of ' . (sizeof($sites)-1) . ' SeaToSky sites </div>
+                        <table>';
 
-        $jsonStart .= '&key=';
-
-        $jsonStart .= get_option('seaToSky_ft_key');
-
-        $jsonData = file_get_contents($jsonStart);
-
-        $PHPdata = json_decode($jsonData);
-
-        $seaToSkyFTResults = seaToSky_objectToArray($PHPdata);
-
-        $returnString = '
-            <form name="seaToSky_search" style="text-align: center" action="../results/" metho="GET" onload="fillCategory();">
-                <div class="seaToSky-search-left">
-                    <div class="seaToSky-search-box">
-                        <h3 style="margin: 0px; margin-top: 10px; padding: 0px; text-align: center">Basic Soil Search</h3>
-                        of ' . sizeof($seaToSkyFTResults['rows']) . ' SeaToSky sites
-                        <table>
-                            <tr>
-                                <td>
-                                    Soil Order:
-                                </td>
-                                <td>
-                                    <select  name="soil_order" onChange="seaToSky_select_great_group();" >
-                                        <option value="">Soil Order</option>
-                                    </select
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Great Group:
-                                </td>
-                                <td>
-
-                                    <select id="great_group" name="great_group" onChange="seaToSky_select_subgroup()">
-                                        <option value="">Select a Soil Order first</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Subgroup:
-                                </td>
-                                <td>
-                                    <select id="subgroup" name="subgroup"">
-                                        <option value="">Select a Great Group first</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><div style="color: #aaa">To select a Great Group, select a Soil Order. To select a Subgroup, select a Great Group. NOTE: Not all soil sites have a Subgroup listed!</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Ecosystem:
-                                </td>
-                                <td>
-                                    <select name="ecosystem">
-                                        <option value="">Ecosystem</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_ecosystems') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
+        foreach($seaToSkyFTResults['columns'] as $category){
+            if(in_array($category, $GLOBALS['dropdownCategories']))
+                $returnString .= getOptionsFromCategory($category, $numberOfSites, $sites);
         }
 
+        // !!! edit the search params for key text searches
         $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    BC Biogeoclimatic Zone:
-                                </td>
-                                <td>
-                                    <select name="bc_biogeoclimatic_zone">
-                                        <option value="">BC Biogeoclimatic Zone</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_bc_biogeoclimatic_zones') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Climate Zone:
-                                </td>
-                                <td>
-                                    <select name="climate_zone">
-                                        <option value="">Climate Zone</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_climate_zones') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
                         </table>
                         <input type="submit" value="Search">
                         <input type="reset" style="margin-bottom: 10px;" value="Reset" />
                     </div>
+                </div>
+
+                <div class="seaToSky-content-top">
+                <div>
+
                 <div id="seaToSky-accordion-1">
                     <div class="seaToSky-accordion-title-1">
-                        Advanced Soil Search Criteria
-                    </div>
-                    <div class="seaToSky-accordion-pane-1">
-                        <table>
-                            <tr>
-                                <td>
-                                    Diagnostic Soil Texture:
-                                </td>
-                                <td>
-                                    <select name="soil_texture_diag">
-                                        <option value="">Diagnostic Soil Texture</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_diagnostic_soil_textures') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Parent Material:
-                                </td>
-                                <td>
-                                    <select name="parent_material">
-                                        <option value="">Parent Material</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_parent_materials') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Soil Processes Group:
-                                </td>
-                                <td>
-                                    <select name="primary_soil_process_gro">
-                                        <option value="">Soil Process Group</option>
-                                        <option value="">---</option>
-        ';
-
-        foreach(get_option('seaToSky_soil_processes_groups') as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div id="seaToSky-accordion-4">
-                    <div class="seaToSky-accordion-title-4">
                         Location Search Criteria
                     </div>
                     <div class="seaToSky-accordion-pane-1">
@@ -539,75 +456,59 @@
                             </tr>
                         </table>
                     </div>
-                </div>
-                <div id="seaToSky-accordion-7">
-                    <div class="seaToSky-accordion-title-7">
-                        Sources and Users Search Criteria
-                    </div>
-                    <div class="seaToSky-accordion-pane-2">
-                        <table>
-                            <tr>
-                                <td>
-                                    Associated Course (keyword):
-                                </td>
-                                <td>
-                                    <select name="courses">
-                                        <option value="">Courses</option>
-                                        <option value="">---</option>
+                </div>    
         ';
 
-        $tempArray = get_option('seaToSky_courses');
-        sort($tempArray);
-        foreach($tempArray as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
+    
         $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Associated University/Organization (keyword):
-                                </td>
-                                <td>
-                                    <select name="universities">
-                                        <option value="">Universities/Organizations</option>
-                                        <option value="">---</option>
-        ';
-
-        $tempArray = get_option('seaToSky_universities');
-        sort($tempArray);
-        foreach($tempArray as $tempValue) {
-            $returnString .= '<option value="' . $tempValue . '">' . $tempValue . '</option>';
-        }
-
-        $returnString .= '
-                                    </select>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
             </div>
-        </form>
-        <div class="seaToSky-search-right">
-            <div class="seaToSky-search-box">
-                <p >The search page allows you to search and filter <strong>SeaToSky</strong> sites. Feel that only Cryosols are cool? Have a yearn-ozem for some Chernozem? Want to see only Podzols within 2&#176 of 49&#176 latitude used by UBC course APBI100? The search page can make all your dreams come true - just click \'Search\' when you\'re ready.</p>
-                <p>Basic search criteria are on the left. Click the panes below them for additional search options. <strong>Be warned, though!</strong> Too many search terms will limit your results, for not all soil sites have information for all fields. For hints on creating and sharing useful searches, go to the <a href="../help">Help page</a>.</p>
-                <p>If you already know the <strong>SeaToSky</strong> number of the site you want to see, enter it below and click \'Go to Site\'.</p>
-                <form name="site" style="text-align: center" action="../site/">
-                    <input type="number" name="id" min="0" style="width:50px">
-                    <input type="submit" style="margin-bottom:10px" value="Go to Site">
-                </form>
-            </div>
-        </div>
-        ';
+        </form>';
 
+        /* !!! 
+            - need to add search params for lat/long (number ranges)
+            - need to also add go straight to site page
+        */
         return $returnString;
     }
 
-    add_shortcode('makesearch', 'seaToSky_search');
+    add_shortcode('stk-search', 'seaToSky_search');
+
+    /*
+     *
+     */
+    function getOptionsFromCategory($category, $total, $sites){
+            $tableHTML .= '
+                <tr>
+                    <td style="text-align: right">'.strtoupper(str_replace('_', ' ', $category)).' </td>
+                <td>   
+                    <select style="min-width: 300px; max-width: 300px;" name='.$category.'>
+                    <option value="">...</option>';
+
+            $options = [];
+    
+            for($i = 0; $i < $total; $i++){
+                $option = $sites[$i][$category];
+    
+                if(!in_array($option, $options) && $option !== '')
+                    array_push($options, $option);
+            }
+
+            foreach($options as $option) {     
+                $tableHTML .= '
+                <option value='.$option.'>'.$option.'</option>
+            ';
+            }
+
+        $returnString .= $tableHTML.'
+        </select>
+        </td>
+        </tr>';
+        
+        return $returnString;
+    }
 
     /*
      Generates code for 'stk-site' shortcode, creating a soil site page
@@ -630,255 +531,21 @@
         if($id != 0) {
             if(sizeof($seaToSkyFTResults) != 2) {
 
-                $selectedSite = [];
-                $x = 0;
-                $rowData = $seaToSkyFTResults['rows'][0];
-                $columnNames = $seaToSkyFTResults['columns'];
+                $selectedSite = getQueryData($seaToSkyFTResults)[0];
 
-                // Create an associative array so that columnName points to the row data for the individual site
-                foreach($columnNames as $column){
-                    $selectedSite[$column] = $rowData[$x];
-                    $x++;
-                }
+                // Title content
+                $completeSite = getTitle($selectedSite);
 
-                $completeSite = '
-                    <div class="seaToSky-content-top"><h3>Site '
-                    .esc_html($selectedSite["key_id"]).
-                    ': '
-                    .esc_html($selectedSite["name"])
-                ;
+                $completeSite .= getBasicFacts($selectedSite);
 
-                $completeSite .= '
-                    </div>
-                ';
+                // Media content
+                $completeSite .= getMedia($selectedSite);
+                /*
+                  Create separate page & function for iframe using the tour_stop id
+                */
 
-                $completeSite .= '
-                    <div class="seaToSky-site-left">
-                    <div class="seaToSky-content-box">
-                        <h3>Basic Facts<h3>
-                        ...
-                    </div>
-                ';
-
-                $completeSite .= '
-                    <div id="seaToSky-accordion-1">
-                        <div class="seaToSky-accordion-title-1">
-                            INFO 1
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p><strong>Soil Order: </strong>'
-                            .esc_html($selectedSite[16]).
-                            '<br /><strong>Great Group: </strong>'
-                            .esc_html($selectedSite[17]).
-                            '</p>
-                        </div>
-                    </div>
-
-                    <div id="seaToSky-accordion-2">
-                        <div class="seaToSky-accordion-title-2">
-                            INFO 2
-                        </div>
-                        <div class="seaToSky-accordion-pane-1">
-                            <p><strong>Land Form: </strong>'
-                            .esc_html($selectedSite[27]).
-                            '<br /><strong>Parent Material: </strong>'
-                            .esc_html($selectedSite[28]).
-                            '<br /><strong>Elevation (m): </strong>'
-                            .esc_html($selectedSite[26]).
-                            '<br /><strong>Topography: </strong>'
-                            .esc_html($selectedSite[29]).
-                            '<br /><strong>Affected by Glaciation: </strong>'
-                            .esc_html($selectedSite[31]).
-                            '</p>
-                        </div>
-                    </div>
-                ';
-
-                $completeSite .= '</div>
-                    <div class="seaToSky-site-right">
-                    <div class="seaToSky-content-media">
-                    <h3>Media</h3>
-                ';
-
-                // If there is a video that wants to be inserted
-                if(esc_url($selectedSite[66]) != "") {
-                    $completeSite .= '
-                        <iframe width="100%" height="300" src="'
-                        . esc_url($selectedSite[66]) .
-                        '" frameborder="0" allowfullscreen></iframe>
-                    ';
-                    if(esc_html($selectedSite[67]) != "" || esc_html($selectedSite[68]) != "") {
-                        $completeSite .= '
-                            <p style="text-align: center">
-                        ';
-                        if(esc_html($selectedSite[67]) != "") {
-                            $completeSite .= '
-                                Featured expert: '
-                                . esc_html($selectedSite[67])
-                            ;
-                            if(esc_html($selectedSite[68]) != "") {
-                                $completeSite .= '<br />';                        ;
-                        }
-                        }
-                        if(esc_html($selectedSite[68]) != "") {
-                            $completeSite .= '
-                                Video host: '
-                                . esc_html($selectedSite[68])
-                            ;
-                        }
-                        $completeSite .= '
-                            </p>
-                        ';
-                    }
-                }
-                if(esc_url($selectedSite[70]) != "") {
-                    $completeSite .= '
-                        <img width="100%" src="'
-                        . esc_url($selectedSite[70]) .
-                        '" alt="'
-                        . $selectedSite[69] .
-                        '">
-                    ';
-                    if(esc_html($selectedSite[69]) != "") {
-                        $completeSite .= '
-                            <p style="text-align: center">'
-                            . esc_html($selectedSite[69]) .
-                            '</p>
-                        ';
-                    }
-                }
-                if(esc_url($selectedSite[72]) != "") {
-                    $completeSite .= '
-                        <img width="100%" src="'
-                        . esc_url($selectedSite[72]) .
-                        '" alt="'
-                        . $selectedSite[71] .
-                        '">
-                    ';
-                    if(esc_html($selectedSite[71]) != "") {
-                        $completeSite .= '
-                            <p style="text-align: center">'
-                            . esc_html($selectedSite[71]) .
-                            '</p>
-                        ';
-                    }
-                }
-                if(esc_url($selectedSite[74]) != "") {
-                    $completeSite .= '
-                        <img width="100%" src="'
-                        . esc_url($selectedSite[74]) .
-                        '" alt="'
-                        . $selectedSite[73] .
-                        '">
-                    ';
-                    if(esc_html($selectedSite[73]) != "") {
-                        $completeSite .= '
-                            <p style="text-align: center">'
-                            . esc_html($selectedSite[73]) .
-                            '</p>
-                        ';
-                    }
-                }
-                if(esc_url($selectedSite[76]) != "") {
-                    $completeSite .= '
-                        <img width="100%" src="'
-                        . esc_url($selectedSite[76]) .
-                        '" alt="'
-                        . $selectedSite[75] .
-                        '">
-                    ';
-                    if(esc_html($selectedSite[75]) != "") {
-                        $completeSite .= '
-                            <p style="text-align: center">'
-                            . esc_html($selectedSite[75]) .
-                            '</p>
-                        ';
-                    }
-                }
-                if(esc_url($selectedSite[66]) == "" && esc_url($selectedSite[70] && esc_url($selectedSite[72]) == "" && esc_url($selectedSite[74]) == "" && esc_url($selectedSite[76]) == "") == "") {
-                    $completeSite .= '
-                        <img width="100%" src="http://ar-seaToSky.sites.olt.ubc.ca/files/2013/07/oops.png" alt="No media found">
-                    ';
-                }
-
-                $completeSite .= '</div>
-                    <div class="seaToSky-content-links">
-                    <h3>Links</h3>
-                ';
-
-                // Insert external links here
-                if(esc_url($selectedSite[53]) != '' || esc_url($selectedSite[55]) != '' || esc_url($selectedSite[57]) != '' || esc_url($selectedSite[59]) != '' || esc_url($selectedSite[61]) != '' || esc_url($selectedSite[63]) != '') {
-
-                    $completeSite .= '
-                        <p>
-                    ';
-
-                    if(esc_url($selectedSite[53]) != '') {
-                        $completeSite .= '
-                            <strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[53]) .
-                            '">'
-                            . esc_html($selectedSite[52]) .
-                            '</a>
-                        ';
-                    }
-                    if(esc_url($selectedSite[55]) != '') {
-                        $completeSite .= '
-                            <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[55]) .
-                            '">'
-                            . esc_html($selectedSite[54]) .
-                            '</a>
-                        ';
-                    }
-                    if(esc_url($selectedSite[57]) != '') {
-                        $completeSite .= '
-                            <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[57]) .
-                            '">'
-                            . esc_html($selectedSite[56]) .
-                            '</a>
-                        ';
-                    }
-                    if(esc_url($selectedSite[59]) != '') {
-                        $completeSite .= '
-                            <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[59]) .
-                            '">'
-                            . esc_html($selectedSite[58]) .
-                            '</a>
-                        ';
-                    }
-                    if(esc_url($selectedSite[61]) != '') {
-                        $completeSite .= '
-                            <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[61]) .
-                            '">'
-                            . $selectedSite[60] .
-                            '</a>
-                        ';
-                    }
-                    if(esc_url($selectedSite[63]) != '') {
-                        $completeSite .= '
-                            <br /><strong>External Page:</strong> <a href="'
-                            . esc_url($selectedSite[63]) .
-                            '">'
-                            . esc_html($selectedSite[62]) .
-                            '</a>
-                        ';
-                    }
-
-
-                    $completeSite .= '
-                        </p>
-                    ';
-
-                }
-
-                $completeSite .= '
-                    </div>
-                    </div>
-                ';
+                $completeSite .= getDropDownDescriptions($selectedSite).'<br>';
+                
 
             } else {
                 $completeSite = '
@@ -895,6 +562,184 @@
 
     }
     add_shortcode('stk-site', 'seaToSky_site');
+
+    /*
+     * 
+     */
+    function getQueryData($seaToSkyFTResults){
+        $data = array();
+        $sites = $seaToSkyFTResults['rows'];
+        $columnNames = $seaToSkyFTResults['columns'];
+
+        $numRows = sizeof($sites);
+
+        // Create an associative array so that columnName points to the row data for the individual site
+        for($row = 0; $row < $numRows; $row++){
+            $rowData = $sites[$row];
+            $index = 0;
+
+            foreach($columnNames as $column){
+                $data[$row][$column] = $rowData[$index];
+                $index++;
+            }
+        }
+
+        return $data;
+    }
+
+    /* Helper functions for making an individual site */
+    function getTitle($selectedSite){
+        return '<div class="seaToSky-content-top">
+                <h3>'
+                .esc_html($selectedSite["item_name"]).
+                ', <span style="text-transform: uppercase">'
+                .esc_html($selectedSite["item_type"]).
+                '</span> 
+                </h3>
+                </div>';
+    }
+
+    function getBasicFacts($selectedSite){
+      $facts =  '
+        <div class="seaToSky-content-box">
+            <h3><u>Basic Facts</u></h3>
+            <p><strong>Focus is on: </strong> '
+        .esc_html($selectedSite["framework_concept"]).
+        '<br> <strong>Tour: </strong> '
+        .esc_html($selectedSite["tour_name"]).
+        ', <strong>Stop: </strong> '
+        .esc_html($selectedSite["tour_stop"]).
+        '<br> <strong>Location: </strong> '
+        .esc_html($selectedSite["country"]).
+        ', '
+        .esc_html($selectedSite["region"]).
+        ', '
+        .esc_html($selectedSite["city"]).
+        '<br> <strong>Latitude & Longitude: </strong>'
+        .esc_html($selectedSite["latitude"]).
+        ', '.esc_html($selectedSite["longitude"]).
+        '<br> <strong>Elevation: </strong>'
+        .esc_html($selectedSite["elevn"]).
+         '<br> <strong>Brief Description: </strong> '
+        .esc_html($selectedSite["short_description"]).
+        '<br> <strong>Example: </strong>
+            <a target="blank" href = '
+        .esc_html($selectedSite["Google_URL"]).
+        '> View on Google Maps </a>
+        
+        </p>
+        </div>';
+
+        return $facts;
+    }
+
+    function getDropDownDescriptions($selectedSite){
+        return '<div id="seaToSky-accordion-1">
+                        <div class="seaToSky-accordion-title-1">
+                            Description
+                        </div>
+                        <div class="seaToSky-accordion-pane-1">'
+                            .esc_html($selectedSite['long_description']).
+                            '</p>
+                        </div>
+                    </div>
+
+                    <div id="seaToSky-accordion-2">
+                        <div class="seaToSky-accordion-title-2">
+                            Affiliations and learning tasks
+                        </div>
+                        <div class="seaToSky-accordion-pane-1">
+                            <p><strong>Submitted by: </strong>'
+                            .esc_html($selectedSite["name_submit"]).
+                            ', on '.esc_html($selectedSite["date_added"]).
+                            '
+                            <br>
+                            <span style="margin-left: 3%">
+                            <strong>Institutions: </strong>'
+                            .esc_html($selectedSite["assoc_institutions"]).
+                            '<br>
+                            </span>
+
+                            <span style="margin-left: 3%">
+                            <strong> Courses: </strong>'
+                            .esc_html($selectedSite['assoc_courses']).
+                            '</span>
+
+                            <br><br>
+                            <strong>Study Questions: </strong> <br>'
+                            .esc_html($selectedSite['study_questions']).
+                            '</p>
+                        </div>
+                    </div>
+
+                    <div id="seaToSky-accordion-3">
+                        <div class="seaToSky-accordion-title-3">
+                            Sources/references
+                        </div>
+                        <div class="seaToSky-accordion-pane-1">
+                            <p>
+                            <strong> <u>Source 1</u>: </strong>
+                            <a style="color: blue" target="_blank" href=" '.esc_html($selectedSite['source1_url']).'" > Click Here </a>
+                            <br> Type: '
+                            .esc_html($selectedSite['source1_type']).
+                            '<br> <i>'
+                            .esc_html($selectedSite['source1_capt']).'</i>
+                            </p>
+                            <p>
+                            <strong> <u>Source 2</u>: </strong>
+                            <a style="color: blue" target="_blank" href=" '.esc_html($selectedSite['source2_url']).'" > Click Here </a>
+                            <br> Type: '
+                            .esc_html($selectedSite['source2_type']).
+                            '<br> <i>'
+                            .esc_html($selectedSite['source2_capt']).'</i>
+                            </p>
+                            <strong> <u>In-depth Source</u>: </strong>
+                            <a style="color: blue" target="_blank" href=" '.esc_html($selectedSite['indepth_url']).'" > Click Here </a>
+                            <br> Type: '
+                            .esc_html($selectedSite['indepth_type']).
+                            '<br> <i>'
+                            .esc_html($selectedSite['indepth_capt']).'</i>
+                            </p>
+                            </p>
+                            <strong> <u>Interactive Media</u>: </strong>
+                            <a href="iframe.html" target="_blank"> 
+                            Click Here </a>
+                            <br> Caption: '
+                            .esc_html($selectedSite['Holo_capt'])
+                        .'</div>
+                    </div>
+                ';
+    }
+
+    function getDetails($selectedSite){
+        return  '<div class="seaToSky-content-box">
+            <h3><u>Details</u></h3>
+            '.esc_html($selectedSite["long_description"]).
+            '</div>';
+    }
+
+    function getSources($selectedSite){
+        return 
+        '<div class="seaToSky-content-box">
+        <h3>Sources</h3>
+        <p> INFO </p>
+        </div>';
+    }
+
+    function getMedia($selectedSite){
+        return '
+        <div class="seaToSky-content-top">
+            <img style="padding-top: 5%; padding-left: 15%" width=85% height=65% src='
+        .esc_html($selectedSite['image1_url']).
+        '> <br>
+            <i> <div style="text-align: center; font-size: 15px;">'.esc_html($selectedSite['image1_capt']). 
+            '</div> </i>
+            <br>
+        '.    
+        '</div>
+        </div>';
+    }
+
 
     /*
      Consumes a std object and makes from it a PHP array

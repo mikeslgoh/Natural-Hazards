@@ -1,18 +1,31 @@
 <?php
         
         $temp = 0;
-    
-        $jsonQuery = "leave_blank=''";
-    
-        // EXAMPLE CODE
-    /* 
-        if(isset($_REQUEST['id']) && $_REQUEST['id'] != '')
-            $jsonQuery .= " AND id='" . $_REQUEST['id'] . "'";
-        if(isset($_REQUEST['city']) && $_REQUEST['city'] != '')
-            $jsonQuery .= " AND city CONTAINS IGNORING CASE '" . $_REQUEST['city'] . "'";
-        if(isset($_REQUEST['region']) && $_REQUEST['region'] != '')
-            $jsonQuery .= " AND planet CONTAINS IGNORING CASE '" . $_REQUEST['planet'] . "'";
-        if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
+
+        $jsonQuery = '';
+        $index = 0;
+     
+        $dropdownCategories = ['item_type', 'experience', 'assoc_institutions', 'assoc_courses',
+    'tour_name', 'city', 'region', 'country', 'framework_concept', 'source1_type', 'source2_type', 'indepth_type'];
+
+        if(isset($_REQUEST['id']) && $_REQUEST['id'] != ''){
+            $jsonQuery .= "tour_stop='" . urlencode($_REQUEST['id']) . "'";
+            $index++;
+        }
+
+        foreach($dropdownCategories as $field){
+            if(isset($_REQUEST[$field]) && $_REQUEST[$field] != ''){
+                {
+                    if($index == 0){
+                        $jsonQuery .= $field."='". urlencode($_REQUEST[$field])."'";
+                        $index++;
+                    }
+                    else
+                        $jsonQuery .= ' AND '.$field."='". urlencode($_REQUEST[$field])."'";
+                }
+            }
+        }
+/*         if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
             $temp = 0;
             if(isset($_REQUEST['degrees']))
                 $temp = $_REQUEST['degrees'];
@@ -41,7 +54,7 @@
             }
             $jsonQuery .= " AND longitude>=" . $minLon . "";
             $jsonQuery .= " AND longitude<=" . $maxLon . "";
-        } */
+        }  */
         
         echo 'google.load(\'visualization\', \'1\', {\'packages\':[\'corechart\', \'table\', \'geomap\']});
                     
@@ -74,7 +87,7 @@
                     },
                     options: {
                         styleId: 2,
-                        templateId: 2,
+                        templateId: 3,
                     }
                 });
 
