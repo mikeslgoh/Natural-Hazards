@@ -368,7 +368,7 @@
      @return    string  HTML
      */
     
-     // !!!
+    // !!!
     function seaToSky_search() {
 
         $seaToSkyFTResults = seaToSky_FT_general_query();
@@ -540,21 +540,18 @@
 
                 // Media content
                 $completeSite .= getMedia($selectedSite);
-                /*
-                  Create separate page & function for iframe using the tour_stop id
-                */
 
                 $completeSite .= getDropDownDescriptions($selectedSite).'<br>';
                 
 
             } else {
                 $completeSite = '
-                    <p>No valid soil site selected; please try again.</p>
+                    <p>No valid site selected; please try again.</p>
                 ';
             }
         } else {
             $completeSite = '
-                <p>No valid soil site selected; please try again.</p>
+                <p>No valid site selected; please try again.</p>
             ';
         }
 
@@ -587,7 +584,9 @@
         return $data;
     }
 
-    /* Helper functions for making an individual site */
+    /* 
+     * Helper functions for making an individual site 
+     */
     function getTitle($selectedSite){
         return '<div class="seaToSky-content-top">
                 <h3>'
@@ -702,7 +701,7 @@
                             </p>
                             </p>
                             <strong> <u>Interactive Media</u>: </strong>
-                            <a href="iframe.html" target="_blank"> 
+                            <a style="color: blue" href="../sea2sky-iframe/?id='.esc_html($selectedSite['tour_stop']).'" target="_blank"> 
                             Click Here </a>
                             <br> Caption: '
                             .esc_html($selectedSite['Holo_capt'])
@@ -739,6 +738,57 @@
         '</div>
         </div>';
     }
+
+    /*
+     * Create an iframe on a new site given the site id 
+     */
+    function seaToSky_createIFrameSiteLink(){
+        $iFrameSite = '';
+
+        if(isset($_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+        } else {
+            $id = 0;
+        }
+
+        if($id) {
+            $jsonQuery = 'https://www.googleapis.com/fusiontables/v1/query?sql=SELECT+Holo_iframe+FROM+';
+
+            $jsonQuery .= get_option('seaToSky_ft_address');
+
+            $jsonQuery .= "+WHERE+tour_stop=".$id;
+    
+            $jsonQuery .= '&key=';
+    
+            $jsonQuery .= get_option('seaToSky_ft_key');
+    
+            $jsonData = file_get_contents($jsonQuery);
+    
+            $PHPdata = json_decode($jsonData);
+    
+            $seaToSkyFTResults = seaToSky_objectToArray($PHPdata);
+        }
+
+        if($id != 0) {
+            if(sizeof($seaToSkyFTResults) != 2) {
+                $iFrameSite = getQueryData($seaToSkyFTResults)[0];
+                $completeSite = $iFrameSite['Holo_iframe'];
+            }
+            else {
+                $completeSite = '
+                    <p>No valid site provided; please try again.</p>
+                ';
+            }
+        } else {
+        $completeSite = '
+            <p>No valid site provided; please try again.</p>
+        ';
+        }
+
+        return $completeSite;
+    }
+
+    add_shortcode('stk-iframe', 'seaToSky_createIFrameSiteLink');
 
 
     /*
