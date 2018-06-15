@@ -209,8 +209,8 @@
      */
 
     function seaToSky_map() {
-         wp_enqueue_script('seaToSky-script-4', 'http://www.google.com/jsapi', array(), 1, true );
-         wp_enqueue_script('seaToSky-script-5', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
+         wp_enqueue_script('seaToSky-script-4', 'https://www.google.com/jsapi', array(), 1, true );
+         wp_enqueue_script('seaToSky-script-5', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
 
          $mapsQuery = "/js/seaToSky-maps.php?seaToSky_ft_address=" . get_option('seaToSky_ft_address') . "";
         $mapsQuery .= getMapQuery();
@@ -728,7 +728,7 @@
     function getMedia($selectedSite){
         return '
         <div class="seaToSky-content-top">
-            <img style="padding-top: 5%; padding-left: 15%" width=85% height=65% src='
+            <img style="padding-top: 5%;" width=85% height=65% src='
         .esc_html($selectedSite['image1_url']).
         '> <br>
             <i> <div style="text-align: center; font-size: 15px;">'.esc_html($selectedSite['image1_capt']). 

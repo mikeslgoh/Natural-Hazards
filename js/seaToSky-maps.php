@@ -25,7 +25,10 @@
                 }
             }
         }
-/*         if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
+
+        //!!! does not include text search
+        
+        if(isset($_REQUEST['latitude']) && $_REQUEST['latitude'] != '') {
             $temp = 0;
             if(isset($_REQUEST['degrees']))
                 $temp = $_REQUEST['degrees'];
@@ -54,11 +57,13 @@
             }
             $jsonQuery .= " AND longitude>=" . $minLon . "";
             $jsonQuery .= " AND longitude<=" . $maxLon . "";
-        }  */
+        } 
         
         echo 'google.load(\'visualization\', \'1\', {\'packages\':[\'corechart\', \'table\', \'geomap\']});
                     
-            var FT_TableID = "' . $_REQUEST['seaToSky_ft_address'] . '";
+            var FT_TableID = "1E6huUsmEf70Sh14ExFQpQ8650fuCFT7kBFSbv4Xu"'
+            //. $_REQUEST['seaToSky_ft_address'] . '";
+            .'
             var layer = null;
             
             function initialize() {
@@ -95,7 +100,7 @@
                 layer.setMap(map);
 
                 var queryText = encodeURIComponent("SELECT \'latitude\', \'longitude\' FROM "+FT_TableID+" WHERE ' . $jsonQuery . '");
-                var query = new google.visualization.Query(\'http://www.google.com/fusiontables/gvizdata?tq=\'  + queryText);
+                var query = new google.visualization.Query(\'https://www.google.com/fusiontables/gvizdata?tq=\'  + queryText);
                                                
                                                                                                                         
                 //set the callback function
