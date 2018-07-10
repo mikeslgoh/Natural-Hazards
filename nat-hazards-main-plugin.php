@@ -101,7 +101,7 @@ function nat_hazards_ft_query() {
 
 	$json_start .= get_option( 'nat_hazards_ft_address' );
 
-	$json_query = nat_hazards_FT_queryParams();
+	$json_query = nat_hazards_ft_query_params();
 
 	$json_sort  = '+ORDER+BY+tour_stop+';
 	$json_where = '+WHERE+';
@@ -120,7 +120,7 @@ function nat_hazards_ft_query() {
 
 	$json_start .= $json_end;
 
-	$json_data = wpcom_vip_file_get_contents( $json_start );
+	$json_data = file_get_contents( $json_start );
 
 	$php_data = json_decode( $json_data );
 
@@ -146,7 +146,7 @@ function nat_hazards_ft_general_query() {
 
 	$json_start .= get_option( 'nat_hazards_ft_key' );
 
-	$json_data = wpcom_vip_file_get_contents( $json_start );
+	$json_data = file_get_contents( $json_start );
 
 	$php_data = json_decode( $json_data );
 
@@ -162,14 +162,16 @@ function nat_hazards_ft_general_query() {
 function nat_hazards_ft_query_params() {
 	$json_query = '';
 
-	if ( isset( $_REQUEST['id'] ) && '' !== $_REQUEST['id'] && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) ) ) {
-		$json_query .= "tour_stop='" . rawurlencode( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) ) . "'";
+	if ( isset( $_REQUEST['id'] ) && '' !== $_REQUEST['id'] ) {
+		$json_query .= "tour_stop='" . 
+		rawurlencode( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) )
+		. "'";
 	}
 
 	$index = 0;
 
 	foreach ( $GLOBALS['dropdown_categories'] as $field ) {
-		if ( isset( $_REQUEST[ $field ] ) && '' !== $_REQUEST[ $field ] && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) ) ) {
+		if ( isset( $_REQUEST[ $field ] ) && '' !== $_REQUEST[ $field ] ) {
 			if ( 0 === $index ) {
 				$json_query .= $field . "='" . sanitize_text_field( wp_unslash( $_REQUEST[ $field ] ) ) . "'";
 				$index++;
@@ -235,7 +237,7 @@ function nat_hazards_map() {
 		wp_enqueue_script( 'nat_hazards-script-5', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
 
 		$maps_query = '/js/nat-hazards-maps.php?nat_hazards_ft_address=' . get_option( 'nat_hazards_ft_address' ) . '';
-		$maps_query .= get_map_query()();
+		$maps_query .= get_map_query();
 
 		wp_enqueue_script( 'nat_hazards-script-6', plugins_url( $maps_query, __FILE__ ), array( 'nat_hazards-script-4', 'nat_hazards-script-5' ), 1, true );
 
@@ -419,7 +421,7 @@ function nat_hazards_search() {
  * @param array  $sites - the data from the sites.
  * @return string  HTML.
  */
-function get_options_from_category( $category, $total, $sites ) {
+function get_options_by_category( $category, $total, $sites ) {
 	$table_html .= '
             <tr>
                 <td style="text-align: right">' . strtoupper( str_replace( '_', ' ', $category ) ) . ' </td>
@@ -800,11 +802,11 @@ function nat_hazards_object_to_array( $nat_hazards_ft_return ) {
  */
 function nat_hazards_options_initializer() {
 	// TODO: check all this works.
-	add_settings_section( 'nat_hazards_ft_data', '', 'nat_hazards_ft_data_callback_functions', 'nat_hazards_instruction_page' );
+	add_settings_section( 'nat_hazards_ft_data', '', 'nat_hazards_ft_data_callback_functions', 'nat_hazards-instruction-page' );
 
-	add_settings_field( 'nat_hazards_ft_address', 'Fusion Table Address:', 'nat_hazards_ft_address', 'nat_hazards_instruction_page', 'nat_hazards_ft_data' );
+	add_settings_field( 'nat_hazards_ft_address', 'Fusion Table Address:', 'nat_hazards_ft_address', 'nat_hazards-instruction-page', 'nat_hazards_ft_data' );
 	register_setting( 'nat_hazards_ft_data', 'nat_hazards_ft_address' );
-	add_settings_field( 'nat_hazards_ft_key', 'Fusion Table Key:', 'nat_hazards_ft_key', 'nat_hazards_instruction_page', 'nat_hazards_ft_data' );
+	add_settings_field( 'nat_hazards_ft_key', 'Fusion Table Key:', 'nat_hazards_ft_key', 'nat_hazards-instruction-page', 'nat_hazards_ft_data' );
 	register_setting( 'nat_hazards_ft_data', 'nat_hazards_ft_key' );
 
 	add_option( 'nat_hazards_universities', array() );
@@ -898,7 +900,7 @@ function nat_hazards_instructions_initializer() {
  * @since 1.0.0
  */
 function nat_hazards_instructions_page() {
-	add_menu_page( 'nat_hazards Instructions and Options', 'nat_hazards', 'manage_options', 'nat_hazards-instruction-page', 'nat_hazards_instructions_initializer' );
+	add_menu_page( 'Natural Hazards Instructions and Options', 'Natural Hazards', 'manage_options', 'nat_hazards-instruction-page', 'nat_hazards_instructions_initializer' );
 }
 
 	add_action( 'admin_menu', 'nat_hazards_instructions_page' );

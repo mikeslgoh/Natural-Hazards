@@ -24,7 +24,7 @@ echo '
 ';
 
 settings_fields( 'nat_hazards_ft_data' );
-do_settings_sections( 'seatosky-instruction-page' );
+do_settings_sections( 'nat_hazards-instruction-page' );
 submit_button( 'Save Fusion Tables Changes' );
 
 echo '
