@@ -1,17 +1,17 @@
-/* Soil Site Content Boxes (seaToSky)
+/* Soil Site Content Boxes (nat_hazards)
 ----------------------------------------------- */
 
-.seaToSky-search-left, .seaToSky-site-left {
+.nat_hazards-search-left, .nat_hazards-site-left {
     float: left;
     width: 60%;
 }
 
-.seaToSky-search-right, .seaToSky-site-right {
+.nat_hazards-search-right, .nat_hazards-site-right {
     float: right;
     width: 48%;
 }
 
-.seaToSky-content-top, .seaToSky-content-media, .seaToSky-content-box, .seaToSky-content-links {
+.nat_hazards-content-top, .nat_hazards-content-media, .nat_hazards-content-box, .nat_hazards-content-links {
     background-color: #feffeb;
     margin-bottom: 20px;
     border: 1px solid #ededed;
@@ -19,27 +19,27 @@
     width: 100%;
 }
 
-.seaToSky-content-top h3, .seaToSky-content-media h3, .seaToSky-content-box h3, .seaToSky-content-links h3 {
+.nat_hazards-content-top h3, .nat_hazards-content-media h3, .nat_hazards-content-box h3, .nat_hazards-content-links h3 {
     color:#542437;
     padding:0;
     margin:10px;
     text-align: left;
 }
 
-.seaToSky-content-top p, .seaToSky-content-media p, .seaToSky-content-box p, .seaToSky-content-links p {
+.nat_hazards-content-top p, .nat_hazards-content-media p, .nat_hazards-content-box p, .nat_hazards-content-links p {
     color:#542437;
     padding:0;
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.seaToSky-content-top {
+.nat_hazards-content-top {
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
-.seaToSky-accordion-title-1, .seaToSky-accordion-title-2, .seaToSky-accordion-title-3, .seaToSky-accordion-title-4, .seaToSky-accordion-title-5, .seaToSky-accordion-title-6, .seaToSky-accordion-title-7 {
-    border:1px solid #;
+.nat_hazards-accordion-title-1, .nat_hazards-accordion-title-2, .nat_hazards-accordion-title-3, .nat_hazards-accordion-title-4, .nat_hazards-accordion-title-5, .nat_hazards-accordion-title-6, .nat_hazards-accordion-title-7 {
+    border:1px solid;
     border-radius: 5px;
     color:#EEE;
     margin-bottom: 2px;
@@ -48,36 +48,36 @@
     text-align: left;
 }
 
-.seaToSky-accordion-title-1 {
+.nat_hazards-accordion-title-1 {
     background: #326931;
 }
 
-.seaToSky-accordion-title-2 {
+.nat_hazards-accordion-title-2 {
     background: #4b6f4a;
 }
 
-.seaToSky-accordion-title-3 {
+.nat_hazards-accordion-title-3 {
     background: #515c49;
 }
 
-.seaToSky-accordion-title-4 {
+.nat_hazards-accordion-title-4 {
     background: #4c4d3e;
 }
 
-.seaToSky-accordion-title-5 {
+.nat_hazards-accordion-title-5 {
     background: #3d3d32;
 }
 
-.seaToSky-accordion-title-6 {
+.nat_hazards-accordion-title-6 {
     background: #36362c;
 }
 
-.seaToSky-accordion-title-7 {
+.nat_hazards-accordion-title-7 {
     background: #292922;
     margin-bottom: 20px;
 }
 
-.seaToSky-accordion-pane-1, .seaToSky-accordion-pane-2 {
+.nat_hazards-accordion-pane-1, .nat_hazards-accordion-pane-2 {
     margin-bottom: 10px;
     border:1px solid #ededed;
     border-radius: 5px;
@@ -86,29 +86,29 @@
     overflow: hidden;
 }
 
-.seaToSky-accordion-pane-2 {
+.nat_hazards-accordion-pane-2 {
     margin-top: -18px;
     margin-bottom: 20px;
 }
 
-.seaToSky-content-media {
+.nat_hazards-content-media {
     text-align: center;
     padding-bottom: 20px;
 }
 
-.seaToSky-content-links {
+.nat_hazards-content-links {
 }
 
 
-/* Soil Site Google Maps Display Div (seaToSky)
+/* Soil Site Google Maps Display Div (nat_hazards)
 ----------------------------------------------- */
 
 #googft-mapCanvas img { max-width: none; box-shadow: none; }
 
-/* Filter Box (seaToSky)
+/* Filter Box (nat_hazards)
 ----------------------------------------------- */
 
-.seaToSky-filter {
+.nat_hazards-filter {
     text-align: center;
     width: 100%;
     background: #feffeb;
@@ -118,7 +118,7 @@
     border-radius: 5px;
 }
 
-.seaToSky-filter #filter-left {
+.nat_hazards-filter #filter-left {
     display:inline-block;
     padding:0px;
     padding-left: 10px;
@@ -128,33 +128,33 @@
 }
 
 
-.seaToSky-filter #filter-left h3 {
+.nat_hazards-filter #filter-left h3 {
     color:#777777;
     padding:0px;
     margin:0px;
 }
 
-.seaToSky-filter #filter-middle {
+.nat_hazards-filter #filter-middle {
     display:inline-block;
     padding-left:10px;
     padding-right:10px;
     padding-bottom: 4px;
 }
 
-.seaToSky-filter #filter-right {
+.nat_hazards-filter #filter-right {
     display:inline-block;
     padding-left:10px;
-    padding-right 10px;
+    padding-right:10px;
 }
 
-.seaToSky-filter #filter-right input {
+.nat_hazards-filter #filter-right input {
     padding:5px;
 }
 
-/* Search Boxes (seaToSky)
+/* Search Boxes (nat_hazards)
 ----------------------------------------------- */
 
-.seaToSky-search-box {
+.nat_hazards-search-box {
     width: 100%;
     overflow: hidden;
     background: #feffeb;
@@ -162,25 +162,25 @@
     border-radius: 5px;
     margin-bottom: 10px;
 }
-.seaToSky-search-box p {
+.nat_hazards-search-box p {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
 }
 
 
-/* Search Results Tabs (seaToSky)
+/* Search Results Tabs (nat_hazards)
 ----------------------------------------------- */
 
-#seaToSky-tabs #menu-wrap {
+#nat_hazards-tabs #menu-wrap {
     text-align: center; 
 }
 
-#seaToSky-tabs #menu-wrap ul {
+#nat_hazards-tabs #menu-wrap ul {
     margin: 0px;
 }
 
-#seaToSky-tabs #menu-wrap li {
+#nat_hazards-tabs #menu-wrap li {
     display: inline-block; 
     float: none; 
     top: 0px; 
@@ -198,31 +198,31 @@
     zoom: 1;
 }
 
-#seaToSky-tabs #menu-wrap li a {
+#nat_hazards-tabs #menu-wrap li a {
     padding: 10px;
     color: #dddddd;
     text-decoration: none;
     text-align: center; 
 }
 
-#seaToSky-tabs #menu-wrap li a:hover {
+#nat_hazards-tabs #menu-wrap li a:hover {
     color: white;
     text-decoration: none;
 }
 
-#seaToSky-tabs #menu-wrap .ui-state-active {
+#nat_hazards-tabs #menu-wrap .ui-state-active {
     background-color: #feffeb;
 }
 
-#seaToSky-tabs #menu-wrap .ui-state-active a {
+#nat_hazards-tabs #menu-wrap .ui-state-active a {
     color: #000000;
 }
 
-#seaToSky-tabs #menu-wrap .ui-state-active a:hover {
+#nat_hazards-tabs #menu-wrap .ui-state-active a:hover {
     color: black;
 }
 
-#seaToSky-tabs .seaToSky-tabs-pane {
+#nat_hazards-tabs .nat_hazards-tabs-pane {
     border: 1px solid #ededed;  
     border-radius: 5px;
     background-color: #feffeb;
@@ -230,7 +230,7 @@
     display: block;
 }
 
-#seaToSky-tabs #map, #seaToSky-tabs #list {
+#nat_hazards-tabs #map, #nat_hazards-tabs #list {
     height: 550px;
     overflow: scroll;
 }
@@ -241,28 +241,28 @@
 /* Minimum width of 600 pixels. */
 @media screen and (max-width: 600px) {
     
-    /* Search (seaToSky) (wide)
+    /* Search (nat_hazards) (wide)
     ----------------------------------------------- */
 
-    .seaToSky-search-left {
+    .nat_hazards-search-left {
     float: none;
     width: 100%;
     }
 
-    .seaToSky-search-right {
+    .nat_hazards-search-right {
     float: none;
     width: 100%;
     }
     
-    /* Site (seaToSky) (wide)
+    /* Site (nat_hazards) (wide)
     ----------------------------------------------- */
     
-    .seaToSky-site-left {
+    .nat_hazards-site-left {
     float: none;
     width: 100%;
     }
     
-    .seaToSky-site-right {
+    .nat_hazards-site-right {
     float: non;
     width: 100%;
     }
