@@ -235,7 +235,7 @@ function nat_hazards_map() {
 		wp_enqueue_script( 'nat_hazards-script-5', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
 
 		$maps_query = '/js/nat-hazards-maps.php?nat_hazards_ft_address=' . get_option( 'nat_hazards_ft_address' ) . '';
-		$maps_query .= getMapQuery();
+		$maps_query .= get_map_query()();
 
 		wp_enqueue_script( 'nat_hazards-script-6', plugins_url( $maps_query, __FILE__ ), array( 'nat_hazards-script-4', 'nat_hazards-script-5' ), 1, true );
 
