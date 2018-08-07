@@ -79,6 +79,7 @@ function nathazards_accordions() {
 }
 
 	add_shortcode( 'nat-hazards-accordions', 'nathazards_accordions' );
+
 /**
  * Generates code for 'makesearchtech' shortcode, enqueuing nat_hazards-list, which enables the conditional drop-down list for soil orders, great groups, and subgroups
  *
@@ -163,8 +164,8 @@ function nat_hazards_ft_query_params() {
 	$json_query = '';
 
 	if ( isset( $_REQUEST['id'] ) && '' !== $_REQUEST['id'] ) {
-		$json_query .= "tour_stop='" . 
-		rawurlencode( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) )
+		$json_query .= "tour_stop='" . rawurlencode( sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) )
+		// $_REQUEST['id']
 		. "'";
 	}
 
@@ -210,7 +211,7 @@ function nat_hazards_list( $nat_hazards_ft_results ) {
 		$table_html .= '
                 <tr>
                     <td align="left">' . esc_html( $sites [ $i ]['tour_stop'] ) . '</td>
-                    <td align="left"><a target="blank_" href="../sea2Sky-site-page/?id=' . esc_html( $sites [ $i ]['tour_stop'] ) . '">' . esc_html( $sites[ $i ]['item_name'] ) . '</a></td>
+                    <td align="left"><a target="blank_" href="../nathazards-site/?id=' . esc_html( $sites [ $i ]['tour_stop'] ) . '">' . esc_html( $sites[ $i ]['item_name'] ) . '</a></td>
                     <td align="left">' . esc_html( $sites[ $i ]['item_type'] ) . '</td>
                     <td align="left">' . esc_html( $sites[ $i ]['framework_concept'] ) . '</td>
                 </tr>
@@ -233,15 +234,18 @@ function nat_hazards_list( $nat_hazards_ft_results ) {
  * @return    string  HTML
  */
 function nat_hazards_map() {
-		wp_enqueue_script( 'nat_hazards-script-4', 'https://www.google.com/jsapi', array(), 1, true );
-		wp_enqueue_script( 'nat_hazards-script-5', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
+	wp_enqueue_script( 'nat_hazards-script-4', 'https://www.google.com/jsapi', array(), 1, true );
 
-		$maps_query = '/js/nat-hazards-maps.php?nat_hazards_ft_address=' . get_option( 'nat_hazards_ft_address' ) . '';
-		$maps_query .= get_map_query();
+	wp_enqueue_script( 'nat_hazards-script-5', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAogLQgkZED4Mv6uDZfb4XWpoFG63zUaZ0', array(), 1, true );
 
-		wp_enqueue_script( 'nat_hazards-script-6', plugins_url( $maps_query, __FILE__ ), array( 'nat_hazards-script-4', 'nat_hazards-script-5' ), 1, true );
+	$maps_query = '/js/nat-hazards-maps.php?nat_hazards_ft_address=' . get_option( 'nat_hazards_ft_address' ) . '';
+	$maps_query .= get_map_query();
 
-		return '<div id="googft-mapCanvas" style="width:100%; height:550px;"></div>';
+	wp_register_script( 'nat_hazards-script-6', plugins_url( $maps_query, __FILE__ ), array( 'jquery', 'nat_hazards-script-4', 'nat_hazards-script-5' ), 1, true );
+
+	wp_enqueue_script( 'nat_hazards-script-6' );
+
+	return '<div id="googft-mapCanvas" style="width:100%; height:550px;"></div>';
 }
 
 	add_shortcode( 'nat-hazards-map', 'nat_hazards_map' );
